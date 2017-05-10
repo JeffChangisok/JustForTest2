@@ -1,0 +1,10 @@
+<litepal>
+    <dbname value="justfortest2" />
+    <version value="3" />
+    <list>
+        <mapping class="com.example.administrator.justfortest2.db.Province" />
+        <mapping class="com.example.administrator.justfortest2.db.City" />
+        <mapping class="com.example.administrator.justfortest2.db.County" />
+        <mapping class="com.example.administrator.justfortest2.db.FavouriteCity" />
+    </list>
+</litepal>
