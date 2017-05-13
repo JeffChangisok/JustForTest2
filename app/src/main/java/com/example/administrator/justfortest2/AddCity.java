@@ -109,7 +109,6 @@ public class AddCity extends AppCompatActivity {
             case R.id.edit:
                 if(adapter.getItemCount()!=0){
                     diyCityList.remove(adapter.getItemCount()-1);
-                    recyclerView.scrollToPosition(adapter.getItemCount()-1);
                     adapter.notifyDataSetChanged();
                 }
                 break;
@@ -118,15 +117,4 @@ public class AddCity extends AppCompatActivity {
         return true;
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        Log.d("MyFault", "AddCity里的onDestroy: ");
-    }
-
-    @Override
-    protected void onRestart() {
-        super.onRestart();
-        Log.d("MyFault", "AddCity里的onRestart: ");
-    }
 }

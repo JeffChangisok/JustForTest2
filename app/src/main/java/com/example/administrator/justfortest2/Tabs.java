@@ -4,58 +4,53 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
-
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
-
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.administrator.justfortest2.db.FavouriteCity;
-import com.example.administrator.justfortest2.db.Province;
 import com.example.administrator.justfortest2.gson.Weather;
 import com.example.administrator.justfortest2.util.HttpUtil;
-import com.example.administrator.justfortest2.util.MyApplication;
-import com.example.administrator.justfortest2.util.RequestWeather;
 import com.example.administrator.justfortest2.util.Utility;
 
 import org.litepal.crud.DataSupport;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Objects;
 
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.Response;
 
+import static org.litepal.LitePalApplication.getContext;
+
 public class Tabs extends AppCompatActivity {
 
-    //public ImageView bingPicImg;
+    public TextView textView;
+
+    public ImageView bingPicImg;
 
     public DrawerLayout drawerLayout;
+
+    public LinearLayout ll;
+
+    private LocalBroadcastManager localBroadcastManager;
 
     public SectionsPagerAdapter mSectionsPagerAdapter;
 
@@ -66,16 +61,57 @@ public class Tabs extends AppCompatActivity {
 
     public List<WeatherFragment> mFragments = new ArrayList<>();
 
-    private LinearLayout ll;
-
-    private Button mPreSelectedBt;
-
     public Weather weather;
 
     public String mWeatherId;
 
-    private Toolbar toolbar;
+    SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
 
+    List<FavouriteCity> savedList;
+
+    Button preSelectedBtn;
+
+
+
+    /**
+     * 加载必应每日一图
+     */
+
+    public void initBtn(Button btn) {
+
+        btn.setLayoutParams(new ViewGroup.LayoutParams(15, 15));
+
+        btn.setBackgroundResource(R.drawable.dot);
+
+        ll.addView(btn);
+
+    }
+
+    private void loadBingPic() {
+        String requestBingPic = "http://guolin.tech/api/bing_pic";
+        HttpUtil.sendOkHttpRequest(requestBingPic, new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                final String bingPic = response.body().string();
+                SharedPreferences.Editor editor = PreferenceManager
+                        .getDefaultSharedPreferences(getContext())
+                        .edit();
+                editor.putString("bing_pic", bingPic);
+                editor.apply();
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Glide.with(Tabs.this).load(bingPic).into(bingPicImg);
+                    }
+                });
+            }
+        });
+    }
 
     public void refresh(final String weatherId) {
 
@@ -84,6 +120,8 @@ public class Tabs extends AppCompatActivity {
                 weatherId + "&key=8c5ef408aec747eb956be39c65689b5f";
 
         HttpUtil.sendOkHttpRequest(weatherUrl, new Callback() {
+            Intent intent = new Intent("com.example.administrator.justfortest2.STOP_REFRESH");
+
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 final String responseText = response.body().string();
@@ -95,9 +133,6 @@ public class Tabs extends AppCompatActivity {
                     favouriteCity.updateAll("weatherId = ?", weatherId);
                     WeatherFragment fragment = WeatherFragment.newInstance(responseText);
                     mFragments.set(currentItem, fragment);
-
-
-
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
@@ -107,16 +142,22 @@ public class Tabs extends AppCompatActivity {
                     });
                 } else {
                     Log.d("MyFault", "onResponse: false");
+                    Toast.makeText(getContext(), "更新失败", Toast.LENGTH_SHORT).show();
+
                 }
+                localBroadcastManager.sendBroadcast(intent);
             }
 
             @Override
             public void onFailure(Call call, IOException e) {
                 e.printStackTrace();
                 Log.d("MyFault", "onFailure: ");
+                Toast.makeText(getContext(), "更新失败", Toast.LENGTH_SHORT).show();
+                localBroadcastManager.sendBroadcast(intent);
             }
         });
 
+        loadBingPic();
 
     }
 
@@ -124,7 +165,7 @@ public class Tabs extends AppCompatActivity {
 
         final String weatherUrl = "https://free-api.heweather.com/v5/weather?city=" +
                 weatherId + "&key=8c5ef408aec747eb956be39c65689b5f";
-
+        savedList = DataSupport.findAll(FavouriteCity.class);
 
         HttpUtil.sendOkHttpRequest(weatherUrl, new Callback() {
             @Override
@@ -132,36 +173,37 @@ public class Tabs extends AppCompatActivity {
                 final String responseText = response.body().string();
                 weather = Utility.handleWeatherResponse(responseText);
                 if (weather != null && "ok".equals(weather.status)) {
-
                     FavouriteCity favouriteCity = new FavouriteCity();
                     favouriteCity.setWeather(responseText);
                     favouriteCity.setWeatherId(weatherId);
+                    favouriteCity.setName(weather.basic.cityName);
                     favouriteCity.updateAll("id = ?", "1");
                     mWeatherId = weather.basic.weatherId;
-                    WeatherFragment fragment = WeatherFragment.newInstance(responseText);
+                    final WeatherFragment fragment = WeatherFragment.newInstance(responseText);
                     mFragments.set(0, fragment);
-
+                    savedList.get(0).setName(weather.basic.cityName);
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
                             initView();
-                            if (mFragments.size() > 0) {
-                                Button firstBtn = (Button) ll.getChildAt(0);
-                                mPreSelectedBt.setBackgroundResource(R.drawable.dot);
-                                firstBtn.setBackgroundResource(R.drawable.selected_dot);
-                                mPreSelectedBt = firstBtn;
+                            if (preSelectedBtn != null) {
+                                preSelectedBtn.setBackgroundResource(R.drawable.dot);
+                                Button currentBtn = (Button) ll.getChildAt(0);
+                                currentBtn.setBackgroundResource(R.drawable.selected_dot);
+                                preSelectedBtn = currentBtn;
                             }
+                            textView.setText(weather.basic.cityName);
                         }
                     });
                 } else {
-                    Log.d("MyFault", "onResponse: false");
+                    Log.d("MyFault", "setWeatherOnPosition0.onResponse: false");
                 }
             }
 
             @Override
             public void onFailure(Call call, IOException e) {
                 e.printStackTrace();
-                Log.d("MyFault", "onFailure: ");
+                Log.d("MyFault", "setWeatherOnPosition0.onFailure: 请求失败");
             }
         });
 
@@ -176,82 +218,88 @@ public class Tabs extends AppCompatActivity {
 
     }
 
-    /**
-     * @param btn 一个新的按钮
-     */
-
-    public void initBtn(Button btn) {
-        btn.setLayoutParams(new ViewGroup.LayoutParams(15, 15));
-        btn.setBackgroundResource(R.drawable.dot);
-        ll.addView(btn);
-    }
-
     @Override
     protected void onResume() {
         super.onResume();
-
-        List<FavouriteCity> savedList = DataSupport.findAll(FavouriteCity.class);
-
+        savedList = DataSupport.findAll(FavouriteCity.class);
+        Log.d("MyFault", "前savedList.size()="+String.valueOf(savedList.size()));
+        Log.d("MyFault", "前mFragments.size()="+String.valueOf(mFragments.size()));
         if ((mFragments.size()) < savedList.size()) {
+            preSelectedBtn = new Button(this);
             mFragments.clear();
+            ll.removeAllViews();
             for (int i = 0; i < savedList.size(); i++) {
                 String weatherInfo = savedList.get(i).getWeather();
                 WeatherFragment fragment = WeatherFragment.newInstance(weatherInfo);
                 mFragments.add(fragment);
                 initBtn(new Button(this));
             }
-            Button firstBtn = (Button) ll.getChildAt(0);
-            firstBtn.setVisibility(View.VISIBLE);
-            firstBtn.setBackgroundResource(R.drawable.selected_dot);
-            mPreSelectedBt = firstBtn;
             initView();
+            Button firstBtn = (Button) ll.getChildAt(0);
+            firstBtn.setBackgroundResource(R.drawable.selected_dot);
+            preSelectedBtn = firstBtn;
+            textView.setText(savedList.get(0).getName());
         }
+        if(savedList.size()==1){
+            textView.setText(savedList.get(0).getName());
+        }
+        //从缓存加载图片
+        String bingPic = prefs.getString("bing_pic", null);
+        if (bingPic != null) {
+            Glide.with(this).load(bingPic).into(bingPicImg);
+        } else {
+            loadBingPic();
+        }
+        Log.d("MyFault", "后savedList.size()="+String.valueOf(savedList.size()));
+        Log.d("MyFault", "后mFragments.size()="+String.valueOf(mFragments.size()));
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tabs);
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle("");
-        setSupportActionBar(toolbar);
-
+        ll = (LinearLayout) findViewById(R.id.ll_dot);
+        localBroadcastManager = LocalBroadcastManager.getInstance(this);
+        textView = (TextView) findViewById(R.id.title_name);
         //bingPicImg = (ImageView) findViewById(R.id.bing_pic_img) ;
-        mPreSelectedBt = new Button(this);
-        ll = (LinearLayout) findViewById(R.id.ll_pager_num);
+        bingPicImg = (ImageView) findViewById(R.id.bing_pic_img);
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mViewPager = (ViewPager) findViewById(R.id.container);
         // Log.d("MyFault", "onCreate: 实例化一个fragment的上面");
         WeatherFragment fragment = WeatherFragment.newInstance("");
         mFragments.add(fragment);
 
+        String firstName = getIntent().getStringExtra("firstName");
+        if(firstName!=null){
+            textView.setText(firstName);
+            getIntent().removeExtra("firstName");
+        }
 
         //打开侧滑菜单按钮
-        Button button = (Button) findViewById(R.id.test_btn);
-        button.setOnClickListener(new View.OnClickListener() {
+        Button button1 = (Button) findViewById(R.id.open);
+        button1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //drawerLayout.openDrawer(GravityCompat.START);
+                Log.d("MyFault", "实时savedList.size()="+String.valueOf(savedList.size()));
+                Log.d("MyFault", "实时mFragments.size()="+String.valueOf(mFragments.size()));
+            }
+        });
+
+        Button button2 = (Button) findViewById(R.id.btn_manager);
+        button2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Tabs.this, AddCity.class);
+                startActivity(intent);
 
             }
         });
+
 
         initView();
 
-        mPreSelectedBt = new Button(this);
-        initBtn(mPreSelectedBt);
-        mPreSelectedBt.setVisibility(View.GONE);
-
-        //注册悬浮按钮点击事件
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(Tabs.this, AddCity.class);
-                startActivity(intent);
-            }
-        });
-
-        //注册页面切换监听事件
+        //页面切换监听
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -260,18 +308,13 @@ public class Tabs extends AppCompatActivity {
             @Override
             public void onPageSelected(int position) {
 
-                if (mPreSelectedBt != null) {
-                    mPreSelectedBt.setBackgroundResource(R.drawable.dot);
+                if (preSelectedBtn != null) {
+                    preSelectedBtn.setBackgroundResource(R.drawable.dot);
+                    Button currentBtn = (Button) ll.getChildAt(position);
+                    currentBtn.setBackgroundResource(R.drawable.selected_dot);
+                    preSelectedBtn = currentBtn;
                 }
-
-                /*if (mFragments.size() > 0) {
-                    Button btn = (Button) ll.getChildAt(0);
-                    btn.setVisibility(View.VISIBLE);
-                }*/
-
-                Button currentBtn = (Button) ll.getChildAt(position);
-                currentBtn.setBackgroundResource(R.drawable.selected_dot);
-                mPreSelectedBt = currentBtn;
+                textView.setText(savedList.get(position).getName());
             }
 
             @Override
@@ -282,6 +325,7 @@ public class Tabs extends AppCompatActivity {
     }
 
 
+    //适配器
     public class SectionsPagerAdapter extends FragmentStatePagerAdapter {
 
         List<WeatherFragment> fragmentList;
@@ -310,11 +354,6 @@ public class Tabs extends AppCompatActivity {
         }
 
     }
-
-    /**
-     * 加载必应每日一图
-     */
-    //利用广播
 
 
 }

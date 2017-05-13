@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -83,7 +84,6 @@ public class ChooseAreaFragment extends Fragment {
     @Override
     public void onActivityCreated(final Bundle savedInstanceState){
         super.onActivityCreated(savedInstanceState);
-
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             @Override
             public void onItemClick(AdapterView<?> parent,View view,int position,long id){
@@ -98,14 +98,13 @@ public class ChooseAreaFragment extends Fragment {
                     if (getActivity() instanceof  MainActivity) {
                         Intent intent = new Intent(getActivity(),Tabs.class);
                         intent.putExtra("weather_id",weatherId);
+                        intent.putExtra("firstName",dataList.get(position));
                         startActivity(intent);
                         getActivity().finish();
                     } else if (getActivity() instanceof Tabs) {
                         Tabs activity = (Tabs) getActivity();
                         activity.drawerLayout.closeDrawers();
                         activity.setWeatherOnPosition0(weatherId);
-                        /*activity.swipeRefresh.setRefreshing(true);*/
-                        /*activity.requestWeather(weatherId);*/
                     }
 
                 }

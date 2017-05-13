@@ -1,5 +1,6 @@
 package com.example.administrator.justfortest2;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Handler;
 import android.support.v4.content.LocalBroadcastManager;
@@ -57,6 +58,27 @@ public class SearchCity extends AppCompatActivity {
     public SearchCity() {
     }
 
+    private ProgressDialog progressDialog;
+    /**
+     * 显示进度对话框
+     */
+    private void showProgressDialog(){
+        if (progressDialog == null) {
+            progressDialog = new ProgressDialog(this);
+            progressDialog.setMessage("正在加载....");
+            progressDialog.setCanceledOnTouchOutside(false);
+        }
+        progressDialog.show();
+    }
+    /**
+     * 关闭进度对话框
+     */
+    private void closeProgressDialog(){
+        if (progressDialog != null) {
+            progressDialog.dismiss();
+        }
+    }
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_city);
@@ -74,14 +96,10 @@ public class SearchCity extends AppCompatActivity {
                 final String weatherId = mData.get(position).get("id").toString();
                 final String cityName = mData.get(position).get("title").toString();
 
-                /*FavouriteCity favouriteCity = new FavouriteCity();
-                favouriteCity.setName(cityName);
-                favouriteCity.setWeatherId(weatherId);
-                favouriteCity.save();*/
-
 
                 final String weatherUrl = "https://free-api.heweather.com/v5/weather?city=" +
                         weatherId + "&key=8c5ef408aec747eb956be39c65689b5f";
+                showProgressDialog();
 
                 HttpUtil.sendOkHttpRequest(weatherUrl, new Callback() {
                     @Override
@@ -94,6 +112,8 @@ public class SearchCity extends AppCompatActivity {
                             favouriteCity.setWeather(responseText);
                             favouriteCity.setWeatherId(weatherId);
                             favouriteCity.save();
+                            closeProgressDialog();
+                            finish();
                         } else {
                             Log.d("MyFault", "onResponse: false");
                         }
@@ -107,16 +127,10 @@ public class SearchCity extends AppCompatActivity {
                     }
                 });
 
-                /*Intent intent = new Intent("com.example.administrator.justfortest2.ADD_CITY");
-                intent.putExtra("cityName",mData.get(position).get("title").toString());
-                localBroadcastManager.sendBroadcast(intent);*/
-
-
                 Intent intent = new Intent(SearchCity.this,AddCity.class);
                 intent.putExtra("cityName",mData.get(position).get("title").toString());
                 setResult(RESULT_OK,intent);
 
-                finish();
             }
         });
     }
