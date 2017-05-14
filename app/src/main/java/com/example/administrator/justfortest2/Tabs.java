@@ -222,9 +222,9 @@ public class Tabs extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         savedList = DataSupport.findAll(FavouriteCity.class);
-        Log.d("MyFault", "前savedList.size()="+String.valueOf(savedList.size()));
-        Log.d("MyFault", "前mFragments.size()="+String.valueOf(mFragments.size()));
-        if ((mFragments.size()) < savedList.size()) {
+        /*Log.d("MyFault", "前savedList.size()="+String.valueOf(savedList.size()));
+        Log.d("MyFault", "前mFragments.size()="+String.valueOf(mFragments.size()));*/
+        if ((mFragments.size()) != savedList.size()) {
             preSelectedBtn = new Button(this);
             mFragments.clear();
             ll.removeAllViews();
@@ -250,8 +250,24 @@ public class Tabs extends AppCompatActivity {
         } else {
             loadBingPic();
         }
-        Log.d("MyFault", "后savedList.size()="+String.valueOf(savedList.size()));
-        Log.d("MyFault", "后mFragments.size()="+String.valueOf(mFragments.size()));
+        /*Log.d("MyFault", "后savedList.size()="+String.valueOf(savedList.size()));
+        Log.d("MyFault", "后mFragments.size()="+String.valueOf(mFragments.size()));*/
+
+        /*int position = getIntent().getIntExtra("position",0);
+        Log.d("MyFault", "onResume: "+position);
+        if(position!=0){
+            mViewPager.setCurrentItem(position);
+            getIntent().removeExtra("position");
+        }*/
+        //Log.d("MyFault", "onResume: "+getIntent().getStringExtra("position"));
+
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        mViewPager.setCurrentItem(intent.getIntExtra("position",0));
+        intent.removeExtra("position");
     }
 
     @Override

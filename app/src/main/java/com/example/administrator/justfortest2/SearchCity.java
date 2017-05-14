@@ -96,7 +96,6 @@ public class SearchCity extends AppCompatActivity {
                 final String weatherId = mData.get(position).get("id").toString();
                 final String cityName = mData.get(position).get("title").toString();
 
-
                 final String weatherUrl = "https://free-api.heweather.com/v5/weather?city=" +
                         weatherId + "&key=8c5ef408aec747eb956be39c65689b5f";
                 showProgressDialog();
