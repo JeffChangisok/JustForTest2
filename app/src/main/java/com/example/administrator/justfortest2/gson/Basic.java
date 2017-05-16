@@ -10,6 +10,12 @@ public class Basic {
     @SerializedName("id")
     public String weatherId;
 
+    @SerializedName("lat")
+    public String wei;
+
+    @SerializedName("lon")
+    public String jing;
+
     public Update update;
 
     public class Update {

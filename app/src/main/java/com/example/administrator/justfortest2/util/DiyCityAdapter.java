@@ -32,7 +32,7 @@ public class DiyCityAdapter extends RecyclerView.Adapter<DiyCityAdapter.ViewHold
     static AddCity addcity;
     RecyItemOnClick recyItemOnClick;
     LayoutInflater layoutInflater;
-    int flag;
+    int flag;//判断是否显示红色按钮
 
     public void setRecyItemOnClick(RecyItemOnClick recyItemOnClick) {
         this.recyItemOnClick = recyItemOnClick;

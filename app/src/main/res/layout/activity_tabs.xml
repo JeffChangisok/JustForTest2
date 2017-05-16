@@ -28,9 +28,13 @@
 
                 <Button
                     android:id="@+id/open"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="打开侧滑" />
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginLeft="5dp"
+
+                    android:background="@drawable/open_black"
+                    />
 
 
                 <TextView
@@ -41,7 +45,8 @@
                     android:layout_alignParentTop="true"
                     android:layout_marginTop="5dp"
                     android:textSize="20dp"
-                    android:text="测试文字" />
+                    android:text="测试文字"
+                    android:textColor="#fff"/>
 
                 <LinearLayout
                     android:id="@+id/ll_dot"
@@ -56,10 +61,13 @@
 
                 <Button
                     android:id="@+id/btn_manager"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="33dp"
+                    android:layout_height="35dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginRight="4dp"
                     android:layout_alignParentRight="true"
-                    android:text="城市管理" />
+                    android:background="@drawable/add_black" />
 
             </RelativeLayout>
 

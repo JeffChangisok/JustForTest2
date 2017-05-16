@@ -104,6 +104,7 @@ public class ChooseAreaFragment extends Fragment {
                     } else if (getActivity() instanceof Tabs) {
                         Tabs activity = (Tabs) getActivity();
                         activity.drawerLayout.closeDrawers();
+                        activity.showProgressDialog();
                         activity.setWeatherOnPosition0(weatherId);
                     }
 

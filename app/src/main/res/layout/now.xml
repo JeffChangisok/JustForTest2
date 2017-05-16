@@ -6,19 +6,40 @@
     android:layout_margin="15dp">
 
     <TextView
+        android:id="@+id/update_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:textColor="#fff"
+        android:text="5月11日 11:35发布"
+        android:textSize="10sp"/>
+
+    <TextView
         android:id="@+id/degree_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end"
         android:textColor="#fff"
-        android:textSize="60sp"/>
+        android:textSize="80sp"
+        android:text="20°"/>
 
-    <TextView
-        android:id="@+id/weather_info_text"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end"
-        android:textColor="#fff"
-        android:textSize="20sp"/>
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/weather_info_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:textColor="#fff"
+            android:textSize="20sp"
+            android:text="晴"/>
+
+    </LinearLayout>
+
+
 
 </LinearLayout>

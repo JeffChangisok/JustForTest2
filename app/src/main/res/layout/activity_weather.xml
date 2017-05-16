@@ -3,13 +3,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-
-
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/swipe_refresh"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
 
         <ScrollView
             android:id="@+id/weather_layout"
@@ -24,9 +21,9 @@
                 android:fitsSystemWindows="true"
                 android:orientation="vertical">
 
-                <include layout="@layout/title" />
-
                 <include layout="@layout/now" />
+
+                <include layout="@layout/hourly_forecast" />
 
                 <include layout="@layout/forecast" />
 
@@ -39,6 +36,5 @@
         </ScrollView>
 
     </android.support.v4.widget.SwipeRefreshLayout>
-
 
 </FrameLayout>

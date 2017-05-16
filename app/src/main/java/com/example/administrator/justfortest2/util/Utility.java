@@ -3,9 +3,11 @@ package com.example.administrator.justfortest2.util;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.example.administrator.justfortest2.HourlyInfo;
 import com.example.administrator.justfortest2.db.City;
 import com.example.administrator.justfortest2.db.County;
 import com.example.administrator.justfortest2.db.Province;
+import com.example.administrator.justfortest2.gson.HourlyAndDaily;
 import com.example.administrator.justfortest2.gson.Weather;
 import com.google.gson.Gson;
 
@@ -89,18 +91,29 @@ public class Utility {
      */
     public static Weather handleWeatherResponse(String response) {
         try {
-            Log.d("inHandle", "onResponse: "+ response );
             JSONObject jsonObject = new JSONObject(response); // 得到返回的完整的JSON数据信息
             //通过名称"HeWeather5"获取值
             //又因为其值是数组类型，所以获取方法是JSONArray()，返回类型也是JSONArray
             JSONArray jsonArray = jsonObject.getJSONArray("HeWeather5");
             //该数组里面只有一个"值"，所以我们取0号位
             String weatherContent = jsonArray.getJSONObject(0).toString();
-            Log.d("inHandle2", "onResponse: "+ weatherContent );
             return new Gson().fromJson(weatherContent, Weather.class);
         } catch (Exception e) {
             e.printStackTrace();
         }
         return null;
     }
+    /**
+     * 将返回的彩云JSON数据解析成Weather实体类
+     */
+    public static HourlyAndDaily handleCaiWeatherResponse(String response){
+        try{
+            return new Gson().fromJson(response,HourlyAndDaily.class);
+        } catch (Exception e){
+            e.printStackTrace();
+            Log.d("MyFault", e.getMessage());
+        }
+        return null;
+    }
+
 }

@@ -2,15 +2,32 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="15dp">
+    android:layout_marginLeft="15dp"
+    android:layout_marginTop="15dp"
+    android:layout_marginRight="15dp">
 
     <TextView
         android:id="@+id/date_text"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        android:layout_weight="2"
+        android:layout_weight="1"
+        android:text="周二"
+        android:gravity="center"
         android:textColor="#fff"/>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:gravity="center">
+        <ImageView
+            android:id="@+id/forecast_image"
+            android:layout_width="27dp"
+            android:layout_height="27dp"
+            android:gravity="center_vertical"/>
+    </LinearLayout>
 
     <TextView
         android:id="@+id/info_text"
@@ -19,24 +36,17 @@
         android:layout_weight="1"
         android:layout_gravity="center_vertical"
         android:gravity="center"
+        android:text="晴"
         android:textColor="#fff"/>
 
     <TextView
-        android:id="@+id/max_text"
+        android:id="@+id/temp_text"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:gravity="right"
+        android:gravity="center"
+        android:text="20~30℃"
         android:layout_weight="1"
-        android:textColor="#fff"/>
-
-    <TextView
-        android:id="@+id/min_text"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_weight="1"
-        android:gravity="right"
         android:textColor="#fff"/>
 
 </LinearLayout>

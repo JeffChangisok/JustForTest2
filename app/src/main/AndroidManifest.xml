@@ -24,12 +24,6 @@
             android:label="@string/title_activity_tabs"
             android:launchMode="singleTask"
             android:theme="@style/AppTheme.NoActionBar" />
-
-        <service
-            android:name=".service.AutoUpdateService"
-            android:enabled="true"
-            android:exported="true" />
-
         <activity
             android:name=".AddCity"
             android:launchMode="singleTask"/>

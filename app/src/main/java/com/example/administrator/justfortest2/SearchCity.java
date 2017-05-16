@@ -22,6 +22,7 @@ import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
 import com.example.administrator.justfortest2.db.FavouriteCity;
+import com.example.administrator.justfortest2.gson.HourlyAndDaily;
 import com.example.administrator.justfortest2.gson.Weather;
 import com.example.administrator.justfortest2.util.HttpUtil;
 import com.example.administrator.justfortest2.util.Utility;
@@ -108,11 +109,10 @@ public class SearchCity extends AppCompatActivity {
                 final String weatherId = mData.get(position).get("id").toString();
                 final String cityName = mData.get(position).get("title").toString();
 
-                List<FavouriteCity> list =  DataSupport.where("name = ?",cityName)
+                List<FavouriteCity> list = DataSupport.where("name = ?", cityName)
                         .find(FavouriteCity.class);
 
-                if(list.isEmpty()) {
-
+                if (list.isEmpty()) {
                     final String weatherUrl = "https://free-api.heweather.com/v5/weather?city=" +
                             weatherId + "&key=8c5ef408aec747eb956be39c65689b5f";
                     showProgressDialog();
@@ -122,19 +122,42 @@ public class SearchCity extends AppCompatActivity {
                         public void onResponse(Call call, Response response) throws IOException {
                             final String responseText = response.body().string();
                             weather = Utility.handleWeatherResponse(responseText);
-                            if (weather != null && "ok".equals(weather.status)) {
-                                FavouriteCity favouriteCity = new FavouriteCity();
-                                favouriteCity.setName(cityName);
-                                favouriteCity.setWeather(responseText);
-                                favouriteCity.setWeatherId(weatherId);
-                                favouriteCity.save();
-                                closeProgressDialog();
-                                finish();
-                            } else {
-                                Log.d("MyFault", "onResponse: false");
-                                Log.d("MyFault", weather.status);
-                                closeProgressDialog();
-                            }
+                            String jing = weather.basic.jing;
+                            String wei = weather.basic.wei;
+                            String caiWeatherUrl = "https://api.caiyunapp.com/v2/D99AfEnT96xj1fsy/" + jing +
+                                    "," + wei + "/forecast.json";
+
+                            HttpUtil.sendOkHttpRequest(caiWeatherUrl, new Callback() {
+                                @Override
+                                public void onResponse(Call call, Response response) throws IOException {
+                                    final String responseText2 = response.body().string();
+                                    HourlyAndDaily hourlyAndDaily = Utility.handleCaiWeatherResponse(responseText2);
+                                    if (weather != null && "ok".equals(weather.status) &&
+                                            hourlyAndDaily != null && "ok".equals(hourlyAndDaily.status)) {
+                                        FavouriteCity favouriteCity = new FavouriteCity();
+                                        favouriteCity.setName(cityName);
+                                        favouriteCity.setWeather(responseText);
+                                        favouriteCity.setWeatherId(weatherId);
+                                        favouriteCity.setCaiweather(responseText2);
+                                        favouriteCity.save();
+                                        closeProgressDialog();
+                                        finish();
+                                    } else {
+                                        Log.d("MyFault", "onResponse: false");
+                                        Log.d("MyFault", weather.status);
+                                        closeProgressDialog();
+                                    }
+
+                                }
+
+                                @Override
+                                public void onFailure(Call call, IOException e) {
+
+                                }
+
+                            });
+
+
                         }
 
                         @Override
@@ -149,7 +172,7 @@ public class SearchCity extends AppCompatActivity {
                     intent.putExtra("cityName", mData.get(position).get("title").toString());
                     setResult(RESULT_OK, intent);
 
-                }else{
+                } else {
                     AlertDialog.Builder dialog = new AlertDialog.Builder(SearchCity.this);
                     dialog.setTitle("这是一个意外(°ー°〃)");
                     dialog.setMessage("请检查你是否已经添加过该城市了");
@@ -244,22 +267,22 @@ public class SearchCity extends AppCompatActivity {
         return null;
     }*/
 
-    private void putData(String files[],List<String> list){
-        boolean flag=false;
-        if("cityid_1.txt".equals(files[0])){
-            flag=true;
+    private void putData(String files[], List<String> list) {
+        boolean flag = false;
+        if ("cityid_1.txt".equals(files[0])) {
+            flag = true;
         }
-        try{
-            for( int i = 0;i<8;i++){
+        try {
+            for (int i = 0; i < 8; i++) {
                 InputStreamReader inputReader = new InputStreamReader(getAssets().open(files[i]));
                 BufferedReader bufReader = new BufferedReader(inputReader);
                 String line = "";
-                if(flag){
-                    while((line = bufReader.readLine())!=null){
-                        list.add("CN"+line);
+                if (flag) {
+                    while ((line = bufReader.readLine()) != null) {
+                        list.add("CN" + line);
                     }
-                }else{
-                    while((line = bufReader.readLine())!=null){
+                } else {
+                    while ((line = bufReader.readLine()) != null) {
                         list.add(line);
                     }
                 }
@@ -267,7 +290,7 @@ public class SearchCity extends AppCompatActivity {
                 inputReader.close();
                 bufReader.close();
             }
-        }catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
 
@@ -290,14 +313,14 @@ public class SearchCity extends AppCompatActivity {
         putData(textFiles);*/
 
 
-        putData(cityIdFiles,mListId);
-        putData(titleFiles,mListTitle);
-        putData(textFiles,mListText);
+        putData(cityIdFiles, mListId);
+        putData(titleFiles, mListTitle);
+        putData(textFiles, mListText);
 
-        for(int i=0;i<mListId.size();i++){
-            item.put("id",mListId.get(i));
-            item.put("title",mListTitle.get(i));
-            item.put("text",mListText.get(i));
+        for (int i = 0; i < mListId.size(); i++) {
+            item.put("id", mListId.get(i));
+            item.put("title", mListTitle.get(i));
+            item.put("text", mListText.get(i));
             //Log.d("MyFault", mListId.get(i));
             mDatas.add(item);
         }

@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -28,8 +29,11 @@ public class AddCity extends AppCompatActivity implements DiyCityAdapter.RecyIte
 
     public Toolbar toolbar;
 
-    private int flag = 0;
+    private View search;
 
+    private View edit;
+
+    private View yes;
 
     @Override
     protected void onResume() {
@@ -45,17 +49,14 @@ public class AddCity extends AppCompatActivity implements DiyCityAdapter.RecyIte
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_addcity);
         Button backBtn = (Button) findViewById(R.id.back_button2);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
-
         GridLayoutManager layoutManager = new GridLayoutManager(this, 2);
         recyclerView.setLayoutManager(layoutManager);
-
         adapter = new DiyCityAdapter(diyCityList, AddCity.this, 0, this);
         recyclerView.setAdapter(adapter);
         adapter.setRecyItemOnClick(this);
@@ -66,6 +67,8 @@ public class AddCity extends AppCompatActivity implements DiyCityAdapter.RecyIte
                 finish();
             }
         });
+
+        Log.d("MyFault", "onCreate: ");
 
     }
 
@@ -81,6 +84,8 @@ public class AddCity extends AppCompatActivity implements DiyCityAdapter.RecyIte
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.toolbar, menu);
+        Log.d("MyFault", "onCreateOptionsMenu: ");
+
         return true;
     }
 
@@ -113,35 +118,31 @@ public class AddCity extends AppCompatActivity implements DiyCityAdapter.RecyIte
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
-        View search =toolbar.findViewById(R.id.search);
-        View edit =toolbar.findViewById(R.id.edit);
+        search = toolbar.findViewById(R.id.search);
+        edit = toolbar.findViewById(R.id.edit);
+        yes = toolbar.findViewById(R.id.yes);
+        Log.d("MyFault", "onOptionsItemSelected: ");
         switch (item.getItemId()) {
             case R.id.search:
                 Intent intent = new Intent(AddCity.this, SearchCity.class);
                 startActivityForResult(intent, 1);
                 break;
             case R.id.edit:
-                /*if(adapter.getItemCount()!=0){
-                    diyCityList.remove(adapter.getItemCount()-1);
-                    adapter.notifyDataSetChanged();
-                }*/
-                //if(getResources().getResourceName(R.id.edit)==R.drawable.selected_dot)
-                if (flag == 0) {
                     adapter = new DiyCityAdapter(diyCityList, AddCity.this, 1, this);
                     recyclerView.setAdapter(adapter);
                     adapter.setRecyItemOnClick(this);
-                    flag = 1;
                     search.setVisibility(View.GONE);
-                    edit.setBackgroundResource(R.drawable.delete);
-                } else {
-                    adapter = new DiyCityAdapter(diyCityList, AddCity.this, 0, this);
-                    recyclerView.setAdapter(adapter);
-                    adapter.setRecyItemOnClick(this);
-                    search.setVisibility(View.VISIBLE);
-                    edit.setBackgroundDrawable(null);
-                    flag = 0;
-                }
+                    edit.setVisibility(View.GONE);
+                    yes.setVisibility(View.VISIBLE);
+                Log.d("MyFault", "onOptionsItemSelected: ");
+                break;
+            case R.id.yes:
+                adapter = new DiyCityAdapter(diyCityList, AddCity.this, 0, this);
+                recyclerView.setAdapter(adapter);
+                adapter.setRecyItemOnClick(this);
+                search.setVisibility(View.VISIBLE);
+                edit.setVisibility(View.VISIBLE);
+                yes.setVisibility(View.GONE);
 
                 break;
             default:

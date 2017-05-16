@@ -24,6 +24,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.administrator.justfortest2.db.FavouriteCity;
+import com.example.administrator.justfortest2.gson.HourlyAndDaily;
 import com.example.administrator.justfortest2.gson.Weather;
 import com.example.administrator.justfortest2.util.HttpUtil;
 import com.example.administrator.justfortest2.util.Utility;
@@ -65,6 +66,8 @@ public class Tabs extends AppCompatActivity {
 
     public Weather weather;
 
+    public HourlyAndDaily hourlyAndDaily;
+
     public String mWeatherId;
 
     SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getContext());
@@ -72,6 +75,8 @@ public class Tabs extends AppCompatActivity {
     List<FavouriteCity> savedList;
 
     Button preSelectedBtn;
+
+    ProgressDialog progressDialog ;
 
 
     /**
@@ -127,26 +132,45 @@ public class Tabs extends AppCompatActivity {
             public void onResponse(Call call, Response response) throws IOException {
                 final String responseText = response.body().string();
                 weather = Utility.handleWeatherResponse(responseText);
-                Log.d("MyFault", weather.status);
-                if (weather != null && "ok".equals(weather.status)) {
-                    FavouriteCity favouriteCity = new FavouriteCity();
-                    favouriteCity.setWeather(responseText);
-                    favouriteCity.updateAll("weatherId = ?", weatherId);
-                    WeatherFragment fragment = WeatherFragment.newInstance(responseText);
-                    mFragments.set(currentItem, fragment);
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            initView();
-                            mViewPager.setCurrentItem(currentItem);
-                        }
-                    });
-                } else {
-                    Log.d("MyFault", "onResponse: false");
-                    Toast.makeText(getContext(), "更新失败", Toast.LENGTH_SHORT).show();
+                String jing = weather.basic.jing;
+                String wei = weather.basic.wei;
+                String caiWeatherUrl = "https://api.caiyunapp.com/v2/D99AfEnT96xj1fsy/" + jing +
+                        "," + wei + "/forecast.json";
 
-                }
-                localBroadcastManager.sendBroadcast(intent);
+                HttpUtil.sendOkHttpRequest(caiWeatherUrl, new Callback() {
+                    @Override
+                    public void onResponse(Call call, Response response) throws IOException {
+                        final String responseText2 = response.body().string();
+                        hourlyAndDaily = Utility.handleCaiWeatherResponse(responseText2);
+                        if (weather != null && "ok".equals(weather.status) &&
+                                hourlyAndDaily != null && "ok".equals(hourlyAndDaily.status)) {
+                            FavouriteCity favouriteCity = new FavouriteCity();
+                            favouriteCity.setWeather(responseText);
+                            favouriteCity.setCaiweather(responseText2);
+                            favouriteCity.updateAll("weatherId = ?", weatherId);
+                            WeatherFragment fragment = WeatherFragment.newInstance(responseText,responseText2);
+                            mFragments.set(currentItem, fragment);
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    initView();
+                                    mViewPager.setCurrentItem(currentItem);
+                                }
+                            });
+                        } else {
+                            Log.d("MyFault", "onResponse: false");
+                            Toast.makeText(getContext(), "更新失败", Toast.LENGTH_SHORT).show();
+
+                        }
+                        localBroadcastManager.sendBroadcast(intent);
+
+                    }
+                    @Override
+                    public void onFailure(Call call, IOException e) {
+                        Toast.makeText(getContext(), "更新失败", Toast.LENGTH_SHORT).show();
+                        localBroadcastManager.sendBroadcast(intent);
+                    }
+                });
             }
 
             @Override
@@ -173,32 +197,57 @@ public class Tabs extends AppCompatActivity {
             public void onResponse(Call call, Response response) throws IOException {
                 final String responseText = response.body().string();
                 weather = Utility.handleWeatherResponse(responseText);
-                if (weather != null && "ok".equals(weather.status)) {
-                    FavouriteCity favouriteCity = new FavouriteCity();
-                    favouriteCity.setWeather(responseText);
-                    favouriteCity.setWeatherId(weatherId);
-                    favouriteCity.setName(weather.basic.cityName);
-                    favouriteCity.updateAll("id = ?", "1");
-                    mWeatherId = weather.basic.weatherId;
-                    final WeatherFragment fragment = WeatherFragment.newInstance(responseText);
-                    mFragments.set(0, fragment);
-                    savedList.get(0).setName(weather.basic.cityName);
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            initView();
-                            if (preSelectedBtn != null) {
-                                preSelectedBtn.setBackgroundResource(R.drawable.dot);
-                                Button currentBtn = (Button) ll.getChildAt(0);
-                                currentBtn.setBackgroundResource(R.drawable.selected_dot);
-                                preSelectedBtn = currentBtn;
-                            }
-                            textView.setText(weather.basic.cityName);
+                String jing =weather.basic.jing;
+                String wei = weather.basic.wei;
+                String caiWeatherUrl = "https://api.caiyunapp.com/v2/D99AfEnT96xj1fsy/" + jing +
+                        "," + wei + "/forecast.json";
+
+                HttpUtil.sendOkHttpRequest(caiWeatherUrl, new Callback() {
+                    @Override
+                    public void onResponse(Call call, Response response) throws IOException {
+                        final String responseText2 = response.body().string();
+                        hourlyAndDaily = Utility.handleCaiWeatherResponse(responseText2);
+
+                        if (weather != null && "ok".equals(weather.status) &&
+                                hourlyAndDaily != null && "ok".equals(hourlyAndDaily.status)) {
+                            FavouriteCity favouriteCity = new FavouriteCity();
+                            favouriteCity.setWeather(responseText);
+                            favouriteCity.setWeatherId(weatherId);
+                            favouriteCity.setCaiweather(responseText2);
+                            favouriteCity.setName(weather.basic.cityName);
+                            favouriteCity.updateAll("id = ?", "1");
+                            mWeatherId = weather.basic.weatherId;
+                            final WeatherFragment fragment = WeatherFragment.newInstance(responseText,responseText2);
+                            mFragments.set(0, fragment);
+                            savedList.get(0).setName(weather.basic.cityName);
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    initView();
+                                    if (preSelectedBtn != null) {
+                                        preSelectedBtn.setBackgroundResource(R.drawable.dot);
+                                        Button currentBtn = (Button) ll.getChildAt(0);
+                                        currentBtn.setBackgroundResource(R.drawable.selected_dot);
+                                        preSelectedBtn = currentBtn;
+                                    }
+                                    textView.setText(weather.basic.cityName);
+                                    closeProgressDialog();
+                                }
+                            });
+                        } else {
+                            Log.d("MyFault", "setWeatherOnPosition0解析彩云失败");
                         }
-                    });
-                } else {
-                    Log.d("MyFault", "setWeatherOnPosition0.onResponse: false");
-                }
+
+                    }
+
+                    @Override
+                    public void onFailure(Call call, IOException e) {
+                        Log.d("MyFault", "setWeatherOnPosition0请求彩云失败");
+                    }
+
+                });
+
+
             }
 
             @Override
@@ -232,7 +281,8 @@ public class Tabs extends AppCompatActivity {
             ll.removeAllViews();
             for (int i = 0; i < savedList.size(); i++) {
                 String weatherInfo = savedList.get(i).getWeather();
-                WeatherFragment fragment = WeatherFragment.newInstance(weatherInfo);
+                String caiWeatherInfo = savedList.get(i).getCaiweather();
+                WeatherFragment fragment = WeatherFragment.newInstance(weatherInfo,caiWeatherInfo);
                 mFragments.add(fragment);
                 initBtn(new Button(this));
             }
@@ -279,7 +329,7 @@ public class Tabs extends AppCompatActivity {
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mViewPager = (ViewPager) findViewById(R.id.container);
         // Log.d("MyFault", "onCreate: 实例化一个fragment的上面");
-        WeatherFragment fragment = WeatherFragment.newInstance("");
+        WeatherFragment fragment = WeatherFragment.newInstance("","");
         mFragments.add(fragment);
 
         String firstName = getIntent().getStringExtra("firstName");
@@ -336,7 +386,6 @@ public class Tabs extends AppCompatActivity {
         });
     }
 
-
     //适配器
     public class SectionsPagerAdapter extends FragmentStatePagerAdapter {
 
@@ -365,6 +414,26 @@ public class Tabs extends AppCompatActivity {
             return fragmentList.size();
         }
 
+    }
+
+    /**
+     * 显示进度对话框
+     */
+    public void showProgressDialog(){
+        if (progressDialog == null) {
+            progressDialog = new ProgressDialog(this);
+            progressDialog.setMessage("正在加载....");
+            progressDialog.setCanceledOnTouchOutside(false);
+        }
+        progressDialog.show();
+    }
+    /**
+     * 关闭进度对话框
+     */
+    public void closeProgressDialog(){
+        if (progressDialog != null) {
+            progressDialog.dismiss();
+        }
     }
 
 

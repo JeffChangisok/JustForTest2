@@ -11,6 +11,15 @@ public class FavouriteCity extends DataSupport{
     private String name;
     private String weather;
     private String weatherId;
+    private String caiweather;
+
+    public String getCaiweather() {
+        return caiweather;
+    }
+
+    public void setCaiweather(String caiweather) {
+        this.caiweather = caiweather;
+    }
 
     public String getWeatherId() {
         return weatherId;

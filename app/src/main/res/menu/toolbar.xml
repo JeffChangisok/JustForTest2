@@ -10,7 +10,13 @@
     <item
         android:id="@+id/edit"
         android:title="edit"
-        app:showAsAction="ifRoom"/>
-
+        app:showAsAction="ifRoom"
+        />
+    <item
+        android:id="@+id/yes"
+        app:showAsAction="always"
+        android:title=""
+        android:icon="@drawable/yes"
+        />
 
 </menu>

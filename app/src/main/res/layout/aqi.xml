@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -18,68 +19,101 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="15dp">
+        android:orientation="horizontal">
 
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1">
+            android:layout_weight="2"
+            android:layout_height="fill_parent"
+            android:orientation="vertical">
 
-            <LinearLayout
-                android:orientation="vertical"
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true">
-
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                >
+                <View
+                    android:id="@+id/strut"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_centerHorizontal="true"/>
                 <TextView
-                    android:id="@+id/aqi_text"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
+                    android:layout_alignRight="@+id/strut"
+                    android:layout_alignParentLeft="true"
+                    android:gravity="center"
                     android:textColor="#fff"
-                    android:textSize="40sp"/>
+                    android:text="AQI"/>
+                <TextView
+                    android:id="@+id/aqi"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/strut"
+                    android:layout_alignParentRight="true"
+                    android:gravity="center"
+                    android:textColor="#fff"
+                    android:text="70μg/m³"/>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                >
+
+                <View
+                    android:id="@+id/strut2"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_centerHorizontal="true"/>
 
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:text="AQI指数"
-                    android:textColor="#fff"/>
+                    android:layout_alignRight="@+id/strut2"
+                    android:layout_alignParentLeft="true"
+                    android:gravity="center"
+                    android:textColor="#fff"
+                    android:text="PM2.5"/>
+                <TextView
+                    android:id="@+id/pm25"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignLeft="@+id/strut2"
+                    android:layout_alignParentRight="true"
+                    android:gravity="center"
+                    android:textColor="#fff"
+                    android:text="43μg/m³"/>
 
-            </LinearLayout>
+            </RelativeLayout>
 
-        </RelativeLayout>
+        </LinearLayout>
 
-        <RelativeLayout
+        <TextView
+            android:id="@+id/qlty"
             android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1">
-
-            <LinearLayout
-                android:orientation="vertical"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true">
-
-                <TextView
-                    android:id="@+id/pm25_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:textColor="#fff"
-                    android:textSize="40sp"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:text="PM2.5指数"
-                    android:textColor="#fff"/>
-
-            </LinearLayout>
-
-        </RelativeLayout>
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="良"
+            android:gravity="center"
+            android:textColor="#fff"
+            android:textSize="50dp"
+            />
 
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/air_info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="15dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="15dp"
+        android:textColor="#fff"/>
 
 </LinearLayout>

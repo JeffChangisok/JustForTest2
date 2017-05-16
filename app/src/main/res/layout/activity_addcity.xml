@@ -24,7 +24,9 @@
                 android:layout_gravity="center_horizontal"
                 android:text="城市管理"
                 android:textColor="#fff"
-                android:textSize="25sp" />
+                android:textSize="25sp"
+                />
+
 
             <Button
                 android:id="@+id/back_button2"
