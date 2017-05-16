@@ -434,6 +434,7 @@ public class WeatherFragment extends Fragment {
         travelInfo.setText(weather.suggestion.travel.info);
         sportTitle.setText(weather.suggestion.sport.title);
         sportInfo.setText(weather.suggestion.sport.info);
+        weatherLayout.setVisibility(View.VISIBLE);
     }
 
     private ProgressDialog progressDialog;
