@@ -30,7 +30,9 @@ import com.example.administrator.justfortest2.util.Utility;
 
 import org.litepal.crud.DataSupport;
 
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -70,7 +72,6 @@ public class Tabs extends AppCompatActivity {
     List<FavouriteCity> savedList;
 
     Button preSelectedBtn;
-
 
 
     /**
@@ -224,7 +225,8 @@ public class Tabs extends AppCompatActivity {
         savedList = DataSupport.findAll(FavouriteCity.class);
         /*Log.d("MyFault", "前savedList.size()="+String.valueOf(savedList.size()));
         Log.d("MyFault", "前mFragments.size()="+String.valueOf(mFragments.size()));*/
-        if ((mFragments.size()) != savedList.size()) {
+
+        if (savedList.size() != 0) {
             preSelectedBtn = new Button(this);
             mFragments.clear();
             ll.removeAllViews();
@@ -237,10 +239,15 @@ public class Tabs extends AppCompatActivity {
             initView();
             Button firstBtn = (Button) ll.getChildAt(0);
             firstBtn.setBackgroundResource(R.drawable.selected_dot);
+            if(mFragments.size()==1){
+                firstBtn.setVisibility(View.GONE);
+            }else{
+                firstBtn.setVisibility(View.VISIBLE);
+            }
             preSelectedBtn = firstBtn;
             textView.setText(savedList.get(0).getName());
         }
-        if(savedList.size()==1){
+        if (savedList.size() == 1) {
             textView.setText(savedList.get(0).getName());
         }
         //从缓存加载图片
@@ -250,23 +257,13 @@ public class Tabs extends AppCompatActivity {
         } else {
             loadBingPic();
         }
-        /*Log.d("MyFault", "后savedList.size()="+String.valueOf(savedList.size()));
-        Log.d("MyFault", "后mFragments.size()="+String.valueOf(mFragments.size()));*/
-
-        /*int position = getIntent().getIntExtra("position",0);
-        Log.d("MyFault", "onResume: "+position);
-        if(position!=0){
-            mViewPager.setCurrentItem(position);
-            getIntent().removeExtra("position");
-        }*/
-        //Log.d("MyFault", "onResume: "+getIntent().getStringExtra("position"));
 
     }
 
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-        mViewPager.setCurrentItem(intent.getIntExtra("position",0));
+        mViewPager.setCurrentItem(intent.getIntExtra("position", 0));
         intent.removeExtra("position");
     }
 
@@ -286,7 +283,7 @@ public class Tabs extends AppCompatActivity {
         mFragments.add(fragment);
 
         String firstName = getIntent().getStringExtra("firstName");
-        if(firstName!=null){
+        if (firstName != null) {
             textView.setText(firstName);
             getIntent().removeExtra("firstName");
         }
@@ -296,9 +293,8 @@ public class Tabs extends AppCompatActivity {
         button1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //drawerLayout.openDrawer(GravityCompat.START);
-                Log.d("MyFault", "实时savedList.size()="+String.valueOf(savedList.size()));
-                Log.d("MyFault", "实时mFragments.size()="+String.valueOf(mFragments.size()));
+                drawerLayout.openDrawer(GravityCompat.START);
+
             }
         });
 

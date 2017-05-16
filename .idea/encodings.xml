@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Encoding">
+    <file url="file://$PROJECT_DIR$/app/src/main/assets/text_1.txt" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/app/src/main/assets/text_2.txt" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/app/src/main/assets/text_3.txt" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/app/src/main/assets/text_4.txt" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/app/src/main/assets/text_5.txt" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/app/src/main/assets/text_6.txt" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/app/src/main/assets/text_7.txt" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/app/src/main/assets/text_8.txt" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/app/src/main/assets/title_1.txt" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/app/src/main/assets/title_2.txt" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/app/src/main/assets/title_3.txt" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/app/src/main/assets/title_4.txt" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/app/src/main/assets/title_5.txt" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/app/src/main/assets/title_6.txt" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/app/src/main/assets/title_7.txt" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/app/src/main/assets/title_8.txt" charset="GBK" />
+  </component>
+</project>
