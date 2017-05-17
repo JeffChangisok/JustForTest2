@@ -236,6 +236,8 @@ public class Tabs extends AppCompatActivity {
                             });
                         } else {
                             Log.d("MyFault", "setWeatherOnPosition0解析彩云失败");
+                            Log.d("MyFault",hourlyAndDaily.status);
+                            Log.d("MyFault",weather.status);
                         }
 
                     }

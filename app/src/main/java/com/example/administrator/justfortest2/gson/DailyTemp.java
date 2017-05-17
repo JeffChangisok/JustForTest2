@@ -5,7 +5,7 @@ package com.example.administrator.justfortest2.gson;
  */
 
 public class DailyTemp {
-    public int max;
-    public int min;
+    public float max;
+    public float min;
     public String date;
 }

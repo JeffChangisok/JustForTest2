@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class AddCity extends AppCompatActivity implements DiyCityAdapter.RecyItemOnClick {
+public class AddCity extends AppCompatActivity implements DiyCityAdapter.RecyItemOnClick,View.OnClickListener {
 
     public List<DiyCity> diyCityList = new ArrayList<>();
 
@@ -29,11 +29,48 @@ public class AddCity extends AppCompatActivity implements DiyCityAdapter.RecyIte
 
     public Toolbar toolbar;
 
-    private View search;
+    private Button search;
+
+    private Button edit;
+
+    private Button yes;
+
+    private Button backBtn;
+
+    /*private View search;
 
     private View edit;
 
-    private View yes;
+    private View yes;*/
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.btn_search:
+                Intent intent = new Intent(AddCity.this, SearchCity.class);
+                startActivityForResult(intent, 1);
+                break;
+            case R.id.btn_edit:
+                adapter = new DiyCityAdapter(diyCityList, AddCity.this, 1, this);
+                recyclerView.setAdapter(adapter);
+                adapter.setRecyItemOnClick(this);
+                search.setVisibility(View.GONE);
+                edit.setVisibility(View.GONE);
+                yes.setVisibility(View.VISIBLE);
+                break;
+            case R.id.btn_yes:
+                adapter = new DiyCityAdapter(diyCityList, AddCity.this, 0, this);
+                recyclerView.setAdapter(adapter);
+                adapter.setRecyItemOnClick(this);
+                search.setVisibility(View.VISIBLE);
+                edit.setVisibility(View.VISIBLE);
+                yes.setVisibility(View.GONE);
+                break;
+            case R.id.backBtn_addCity:
+                finish();
+                break;
+        }
+    }
 
     @Override
     protected void onResume() {
@@ -50,7 +87,14 @@ public class AddCity extends AppCompatActivity implements DiyCityAdapter.RecyIte
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_addcity);
-        Button backBtn = (Button) findViewById(R.id.back_button2);
+        backBtn = (Button) findViewById(R.id.backBtn_addCity);
+        edit = (Button) findViewById(R.id.btn_edit);
+        yes = (Button)findViewById(R.id.btn_yes);
+        search = (Button) findViewById(R.id.btn_search);
+        edit.setOnClickListener(this);
+        yes.setOnClickListener(this);
+        search.setOnClickListener(this);
+        backBtn.setOnClickListener(this);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
@@ -61,12 +105,12 @@ public class AddCity extends AppCompatActivity implements DiyCityAdapter.RecyIte
         recyclerView.setAdapter(adapter);
         adapter.setRecyItemOnClick(this);
 
-        backBtn.setOnClickListener(new View.OnClickListener() {
+        /*backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
             }
-        });
+        });*/
 
         Log.d("MyFault", "onCreate: ");
 
@@ -81,13 +125,14 @@ public class AddCity extends AppCompatActivity implements DiyCityAdapter.RecyIte
         finish();
     }
 
+/*
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.toolbar, menu);
         Log.d("MyFault", "onCreateOptionsMenu: ");
 
         return true;
-    }
+    }*/
 
 
     /**
@@ -115,7 +160,7 @@ public class AddCity extends AppCompatActivity implements DiyCityAdapter.RecyIte
         }
     }
 
-
+/*
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         search = toolbar.findViewById(R.id.search);
@@ -149,6 +194,6 @@ public class AddCity extends AppCompatActivity implements DiyCityAdapter.RecyIte
         }
         return true;
     }
-
+*/
 
 }

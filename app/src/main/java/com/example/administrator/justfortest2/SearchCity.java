@@ -145,6 +145,7 @@ public class SearchCity extends AppCompatActivity {
                                     } else {
                                         Log.d("MyFault", "onResponse: false");
                                         Log.d("MyFault", weather.status);
+                                        Log.d("MyFault", hourlyAndDaily.status);
                                         closeProgressDialog();
                                     }
 
@@ -152,7 +153,7 @@ public class SearchCity extends AppCompatActivity {
 
                                 @Override
                                 public void onFailure(Call call, IOException e) {
-
+                                    Log.d("MyFault", "onFailure: "+e.getMessage());
                                 }
 
                             });
