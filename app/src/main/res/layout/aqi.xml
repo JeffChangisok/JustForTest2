@@ -37,24 +37,28 @@
                     android:id="@+id/strut"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
-                    android:layout_centerHorizontal="true"/>
+                    android:layout_centerInParent="true" />
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
                     android:layout_alignRight="@+id/strut"
                     android:layout_alignParentLeft="true"
                     android:gravity="center"
                     android:textColor="#fff"
+                    android:textSize="19dp"
                     android:text="AQI"/>
                 <TextView
                     android:id="@+id/aqi"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_alignLeft="@+id/strut"
-                    android:layout_alignParentRight="true"
                     android:gravity="center"
                     android:textColor="#fff"
-                    android:text="70μg/m³"/>
+                    android:textSize="15dp"
+                    android:text="70μg/m³"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@+id/strut"
+                    android:layout_toEndOf="@+id/strut" />
 
             </RelativeLayout>
 
@@ -69,25 +73,29 @@
                     android:id="@+id/strut2"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
-                    android:layout_centerHorizontal="true"/>
+                    android:layout_centerInParent="true" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_alignRight="@+id/strut2"
-                    android:layout_alignParentLeft="true"
                     android:gravity="center"
                     android:textColor="#fff"
-                    android:text="PM2.5"/>
+                    android:textSize="19dp"
+                    android:text="PM2.5"
+                    android:layout_centerVertical="true"
+                    android:layout_alignRight="@+id/strut2"
+                    android:layout_alignEnd="@+id/strut2" />
                 <TextView
                     android:id="@+id/pm25"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_alignLeft="@+id/strut2"
-                    android:layout_alignParentRight="true"
                     android:gravity="center"
                     android:textColor="#fff"
-                    android:text="43μg/m³"/>
+                    android:textSize="15dp"
+                    android:text="43μg/m³"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@+id/strut2"
+                    android:layout_toEndOf="@+id/strut2" />
 
             </RelativeLayout>
 
@@ -98,7 +106,7 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:text="良"
+            android:text="轻度污染"
             android:gravity="center"
             android:textColor="#fff"
             android:textSize="50dp"
