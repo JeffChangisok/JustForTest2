@@ -106,7 +106,7 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:text="轻度污染"
+            android:text=""
             android:gravity="center"
             android:textColor="#fff"
             android:textSize="50dp"

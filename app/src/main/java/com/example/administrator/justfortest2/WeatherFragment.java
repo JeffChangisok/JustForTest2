@@ -405,12 +405,20 @@ public class WeatherFragment extends Fragment {
         }
 
         StringBuilder aqiSB = new StringBuilder();
-        aqiSB.append(weather.aqi.city.aqi).append("  μg/m³");
         StringBuilder pm25SB = new StringBuilder();
-        pm25SB.append(weather.aqi.city.aqi).append("  μg/m³");
+
+        if(weather.aqi!=null){
+            aqiSB.append(weather.aqi.city.aqi).append("  μg/m³");
+            pm25SB.append(weather.aqi.city.pm25).append("  μg/m³");
+        }else{
+            aqiSB.append("未知");
+            pm25SB.append("未知");
+            qlty.setText("未知");
+        }
+
         aqi.setText(aqiSB.toString());
         pm25.setText(pm25SB.toString());
-        qlty.setText(weather.aqi.city.qlty);
+
         airInfo.setText(weather.suggestion.air.info);
 
         comfortTitle.setText(weather.suggestion.comfort.title);
