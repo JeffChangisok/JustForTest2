@@ -2,6 +2,7 @@ package com.example.administrator.justfortest2;
 
 
 import android.content.Intent;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -26,11 +27,11 @@ public class AddCity extends AppCompatActivity implements DiyCityAdapter.RecyIte
 
     public DiyCityAdapter adapter;
 
+    private FloatingActionButton addBtn;
+
     private RecyclerView recyclerView;
 
     public Toolbar toolbar;
-
-    private Button search;
 
     private Button edit;
 
@@ -41,15 +42,10 @@ public class AddCity extends AppCompatActivity implements DiyCityAdapter.RecyIte
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.btn_search:
-                Intent intent = new Intent(AddCity.this, SearchCity.class);
-                startActivityForResult(intent, 1);
-                break;
             case R.id.btn_edit:
                 adapter = new DiyCityAdapter(diyCityList, AddCity.this, 1, this);
                 recyclerView.setAdapter(adapter);
                 adapter.setRecyItemOnClick(this);
-                search.setVisibility(View.GONE);
                 edit.setVisibility(View.GONE);
                 yes.setVisibility(View.VISIBLE);
                 break;
@@ -57,12 +53,15 @@ public class AddCity extends AppCompatActivity implements DiyCityAdapter.RecyIte
                 adapter = new DiyCityAdapter(diyCityList, AddCity.this, 0, this);
                 recyclerView.setAdapter(adapter);
                 adapter.setRecyItemOnClick(this);
-                search.setVisibility(View.VISIBLE);
                 edit.setVisibility(View.VISIBLE);
                 yes.setVisibility(View.GONE);
                 break;
             case R.id.backBtn_addCity:
                 finish();
+                break;
+            case R.id.btn_add:
+                Intent intent = new Intent(AddCity.this, SearchCity.class);
+                startActivityForResult(intent, 1);
                 break;
         }
     }
@@ -85,10 +84,10 @@ public class AddCity extends AppCompatActivity implements DiyCityAdapter.RecyIte
         backBtn = (Button) findViewById(R.id.backBtn_addCity);
         edit = (Button) findViewById(R.id.btn_edit);
         yes = (Button) findViewById(R.id.btn_yes);
-        search = (Button) findViewById(R.id.btn_search);
+        addBtn  = (FloatingActionButton) findViewById(R.id.btn_add);
         edit.setOnClickListener(this);
         yes.setOnClickListener(this);
-        search.setOnClickListener(this);
+        addBtn.setOnClickListener(this);
         backBtn.setOnClickListener(this);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("");

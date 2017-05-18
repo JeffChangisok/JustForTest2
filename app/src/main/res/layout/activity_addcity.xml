@@ -44,26 +44,16 @@
                     android:layout_centerHorizontal="true" />
 
                 <Button
-                    android:id="@+id/btn_search"
+                    android:id="@+id/btn_edit"
                     android:layout_width="60dp"
                     android:layout_height="40dp"
                     android:layout_centerHorizontal="true"
                     android:layout_centerVertical="true"
                     android:layout_alignParentRight="true"
                     android:layout_alignParentEnd="true"
-                    android:text="SEARCH"
+                    android:text="编辑"
                     android:background="#00000000"
                      />
-
-                <Button
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:text="EDIT"
-                    android:background="#00000000"
-                    android:id="@+id/btn_edit"
-                    android:layout_toLeftOf="@+id/btn_search"
-                    android:layout_toStartOf="@+id/btn_search"
-                    android:layout_alignBottom="@+id/btn_search" />
 
                 <Button
                     android:id="@+id/btn_yes"
@@ -80,26 +70,6 @@
 
             </RelativeLayout>
 
-
-            <!--
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:text="城市管理"
-                android:textColor="#fff"
-                android:textSize="25sp"
-                />
-
-
-            <Button
-                android:id="@+id/back_button2"
-                android:layout_width="32dp"
-                android:layout_height="29dp"
-                android:background="@drawable/back" />
-                -->
-
         </android.support.v7.widget.Toolbar>
 
     </android.support.design.widget.AppBarLayout>
@@ -109,6 +79,14 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/btn_add"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="15dp"
+        android:src="@drawable/add1"/>
 
 
 </android.support.design.widget.CoordinatorLayout>
