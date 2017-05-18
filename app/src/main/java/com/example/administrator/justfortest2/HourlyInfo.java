@@ -9,7 +9,7 @@ public class HourlyInfo {
     private String hourlyTemp;
     private int imageId;
 
-    public HourlyInfo(String hourlyTemp,String hourlyDate,int imageId){
+    public HourlyInfo(String hourlyTemp, String hourlyDate, int imageId) {
         this.hourlyDate = hourlyDate;
         this.hourlyTemp = hourlyTemp;
         this.imageId = imageId;

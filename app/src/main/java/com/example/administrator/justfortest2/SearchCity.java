@@ -4,8 +4,6 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Handler;
-import android.support.annotation.Nullable;
-import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -14,12 +12,10 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
-import android.widget.Toast;
 
 import com.example.administrator.justfortest2.db.FavouriteCity;
 import com.example.administrator.justfortest2.gson.HourlyAndDaily;
@@ -31,11 +27,8 @@ import org.litepal.crud.DataSupport;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -49,7 +42,6 @@ public class SearchCity extends AppCompatActivity {
     EditText eSearch;
     ImageView ivDeleteText;
     ListView mListView;
-
     ArrayList<Map<String, Object>> mData = new ArrayList();
     List<String> mListTitle = new ArrayList();
     List<String> mListText = new ArrayList();
@@ -60,10 +52,10 @@ public class SearchCity extends AppCompatActivity {
 
     Runnable eChanged = new Runnable() {
         public void run() {
-            String data = SearchCity.this.eSearch.getText().toString();
-            SearchCity.this.mData.clear();
-            SearchCity.this.getmDataSub(SearchCity.this.mData, data);
-            SearchCity.this.adapter.notifyDataSetChanged();
+            String data = eSearch.getText().toString();
+            mData.clear();
+            getmDataSub(mData, data);
+            adapter.notifyDataSetChanged();
         }
     };
 
@@ -153,12 +145,9 @@ public class SearchCity extends AppCompatActivity {
 
                                 @Override
                                 public void onFailure(Call call, IOException e) {
-                                    Log.d("MyFault", "onFailure: "+e.getMessage());
+                                    Log.d("MyFault", "onFailure: " + e.getMessage());
                                 }
-
                             });
-
-
                         }
 
                         @Override
@@ -185,7 +174,6 @@ public class SearchCity extends AppCompatActivity {
                     });
                     dialog.show();
                 }
-
             }
         });
     }
@@ -210,22 +198,22 @@ public class SearchCity extends AppCompatActivity {
 
             public void afterTextChanged(Editable s) {
                 if (s.length() == 0) {
-                    SearchCity.this.ivDeleteText.setVisibility(View.GONE);
+                    ivDeleteText.setVisibility(View.GONE);
                     mListView.setVisibility(View.GONE);
                 } else {
                     mListView.setVisibility(View.VISIBLE);
-                    SearchCity.this.ivDeleteText.setVisibility(View.VISIBLE);
+                    ivDeleteText.setVisibility(View.VISIBLE);
                 }
-                SearchCity.this.myhandler.post(SearchCity.this.eChanged);
+                myhandler.post(eChanged);
             }
         });
     }
 
     private void getmDataSub(ArrayList<Map<String, Object>> mDataSubs, String data) {
-        int length = this.mListTitle.size();
+        int length = mListTitle.size();
 
         for (int i = 0; i < length; ++i) {
-            if (((String) this.mListTitle.get(i)).contains(data) || ((String) this.mListText.get(i)).contains(data)) {
+            if (mListTitle.get(i).contains(data) || mListText.get(i).contains(data)) {
                 HashMap item = new HashMap();
                 item.put("title", mListTitle.get(i));
                 item.put("text", mListText.get(i));
@@ -237,36 +225,13 @@ public class SearchCity extends AppCompatActivity {
     }
 
     private void set_ivDeleteText_OnClick() {
-        this.ivDeleteText = (ImageView) this.findViewById(R.id.ivDeleteText);
-        this.ivDeleteText.setOnClickListener(new View.OnClickListener() {
+        ivDeleteText = (ImageView) findViewById(R.id.ivDeleteText);
+        ivDeleteText.setOnClickListener(new View.OnClickListener() {
             public void onClick(View arg0) {
-                SearchCity.this.eSearch.setText("");
+                eSearch.setText("");
             }
         });
     }
-
-
-
-    /*private List<String> putData(String files[]) {
-
-        StringBuilder stringBuilder = new StringBuilder();
-        try {
-            for (int i = 0; i < 8; i++) {
-                InputStream in = getAssets().open(files[i]);
-                int size = in.available();
-                byte[] buffer = new byte[size];
-                in.read(buffer);
-                in.close();
-                String str = new String(buffer,"utf8");
-                stringBuilder.append(str);
-            }
-            return Arrays.asList(stringBuilder.toString().split("\n"));
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }*/
 
     private void putData(String files[], List<String> list) {
         boolean flag = false;
@@ -302,17 +267,10 @@ public class SearchCity extends AppCompatActivity {
         HashMap item = new HashMap();
         String cityIdFiles[] = {"cityid_1.txt", "cityid_2.txt", "cityid_3.txt", "cityid_4.txt",
                 "cityid_5.txt", "cityid_6.txt", "cityid_7.txt", "cityid_8.txt"};
-
         String titleFiles[] = {"title_1.txt", "title_2.txt", "title_3.txt", "title_4.txt",
                 "title_5.txt", "title_6.txt", "title_7.txt", "title_8.txt"};
-
         String textFiles[] = {"text_1.txt", "text_2.txt", "text_3.txt", "text_4.txt",
                 "text_5.txt", "text_6.txt", "text_7.txt", "text_8.txt"};
-
-        /*putData(cityIdFiles);
-        putData(titleFiles);
-        putData(textFiles);*/
-
 
         putData(cityIdFiles, mListId);
         putData(titleFiles, mListTitle);
@@ -322,49 +280,8 @@ public class SearchCity extends AppCompatActivity {
             item.put("id", mListId.get(i));
             item.put("title", mListTitle.get(i));
             item.put("text", mListText.get(i));
-            //Log.d("MyFault", mListId.get(i));
             mDatas.add(item);
         }
-
-        /*try {
-                InputStream in = getAssets().open(cityIdFiles[0]);
-                int size = in.available();
-                byte[] buffer = new byte[size];
-                in.read(buffer);
-                in.close();
-                String str = new String(buffer,"utf8");
-                Log.d("MyFault",str);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }*/
-
-
-        /*mListTitle.add("武汉");
-        mListText.add("湖北-武汉");
-        mListId.add("CN101200101");
-        item.put("title", mListTitle.get(0));
-        item.put("text", mListText.get(0));
-        item.put("id", mListId.get(0));
-        mDatas.add(item);
-
-        mListTitle.add("江夏");
-        mListText.add("湖北-武汉");
-        mListId.add("CN101200105");
-        item = new HashMap();
-        item.put("title", mListTitle.get(1));
-        item.put("text", mListText.get(1));
-        item.put("id", mListId.get(1));
-        mDatas.add(item);
-
-        mListTitle.add("武昌");
-        mListText.add("湖北-武汉");
-        mListId.add("CN101200106");
-        item = new HashMap();
-        item.put("title", mListTitle.get(2));
-        item.put("text", mListText.get(2));
-        item.put("id", mListId.get(2));
-        mDatas.add(item);*/
-
     }
 
 }

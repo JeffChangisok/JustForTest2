@@ -20,7 +20,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.administrator.justfortest2.db.FavouriteCity;
 import com.example.administrator.justfortest2.gson.DailyTemp;
@@ -83,8 +82,6 @@ public class WeatherFragment extends Fragment {
     private TextView travelInfo;
     private TextView sportTitle;
     private TextView sportInfo;
-
-    //public String cityName;
 
     public WeatherFragment() {
     }
@@ -210,22 +207,17 @@ public class WeatherFragment extends Fragment {
      * 根据天气id请求城市天气信息
      */
     public void requestWeather(final String weatherId) {
-        //应该增加一个根据天气ID从数据库查询经纬度
         String weatherUrl = "https://free-api.heweather.com/v5/weather?city=" +
                 weatherId + "&key=8c5ef408aec747eb956be39c65689b5f";
         //在utility中的解析方法中会根据返回数据的键进行处理
-
         showProgressDialog();
-
         HttpUtil.sendOkHttpRequest(weatherUrl, new Callback() {
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 final String responseText = response.body().string();
                 final Weather weather = Utility.handleWeatherResponse(responseText);
-
                 String jing = weather.basic.jing;
                 String wei = weather.basic.wei;
-
                 String caiWeatherUrl = "https://api.caiyunapp.com/v2/D99AfEnT96xj1fsy/" + jing +
                         "," + wei + "/forecast.json";
 
@@ -258,7 +250,6 @@ public class WeatherFragment extends Fragment {
                                 }
                             }
                         });
-
                     }
 
                     @Override
@@ -266,18 +257,14 @@ public class WeatherFragment extends Fragment {
                         e.printStackTrace();
                         Log.d("MyFault", "weatherFragment中，彩云请求失败 ");
                     }
-
                 });
-
             }
 
             @Override
             public void onFailure(Call call, IOException e) {
                 e.printStackTrace();
                 Log.d("MyFault", "weatherFragment中，请求失败 ");
-
             }
-
         });
     }
 
@@ -418,9 +405,9 @@ public class WeatherFragment extends Fragment {
         }
 
         StringBuilder aqiSB = new StringBuilder();
-        aqiSB.append(weather.aqi.city.aqi).append("μg/m³");
+        aqiSB.append(weather.aqi.city.aqi).append("  μg/m³");
         StringBuilder pm25SB = new StringBuilder();
-        pm25SB.append(weather.aqi.city.aqi).append("μg/m³");
+        pm25SB.append(weather.aqi.city.aqi).append("  μg/m³");
         aqi.setText(aqiSB.toString());
         pm25.setText(pm25SB.toString());
         qlty.setText(weather.aqi.city.qlty);

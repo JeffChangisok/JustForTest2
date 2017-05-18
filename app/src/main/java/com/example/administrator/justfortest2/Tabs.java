@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.provider.ContactsContract;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.GravityCompat;
@@ -31,9 +32,7 @@ import com.example.administrator.justfortest2.util.Utility;
 
 import org.litepal.crud.DataSupport;
 
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -76,7 +75,9 @@ public class Tabs extends AppCompatActivity {
 
     Button preSelectedBtn;
 
-    ProgressDialog progressDialog ;
+    ProgressDialog progressDialog;
+
+    private int position = -1;
 
 
     /**
@@ -84,18 +85,15 @@ public class Tabs extends AppCompatActivity {
      */
 
     public void initBtn(Button btn) {
-
         btn.setLayoutParams(new ViewGroup.LayoutParams(15, 15));
-
         btn.setBackgroundResource(R.drawable.dot);
-
         ll.addView(btn);
-
     }
 
     private void loadBingPic() {
         String requestBingPic = "http://guolin.tech/api/bing_pic";
         HttpUtil.sendOkHttpRequest(requestBingPic, new Callback() {
+
             @Override
             public void onFailure(Call call, IOException e) {
                 e.printStackTrace();
@@ -148,7 +146,7 @@ public class Tabs extends AppCompatActivity {
                             favouriteCity.setWeather(responseText);
                             favouriteCity.setCaiweather(responseText2);
                             favouriteCity.updateAll("weatherId = ?", weatherId);
-                            WeatherFragment fragment = WeatherFragment.newInstance(responseText,responseText2);
+                            WeatherFragment fragment = WeatherFragment.newInstance(responseText, responseText2);
                             mFragments.set(currentItem, fragment);
                             runOnUiThread(new Runnable() {
                                 @Override
@@ -165,6 +163,7 @@ public class Tabs extends AppCompatActivity {
                         localBroadcastManager.sendBroadcast(intent);
 
                     }
+
                     @Override
                     public void onFailure(Call call, IOException e) {
                         Toast.makeText(getContext(), "更新失败", Toast.LENGTH_SHORT).show();
@@ -181,9 +180,7 @@ public class Tabs extends AppCompatActivity {
                 localBroadcastManager.sendBroadcast(intent);
             }
         });
-
         loadBingPic();
-
     }
 
     public void setWeatherOnPosition0(final String weatherId) {
@@ -193,16 +190,18 @@ public class Tabs extends AppCompatActivity {
         savedList = DataSupport.findAll(FavouriteCity.class);
 
         HttpUtil.sendOkHttpRequest(weatherUrl, new Callback() {
+
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 final String responseText = response.body().string();
                 weather = Utility.handleWeatherResponse(responseText);
-                String jing =weather.basic.jing;
+                String jing = weather.basic.jing;
                 String wei = weather.basic.wei;
                 String caiWeatherUrl = "https://api.caiyunapp.com/v2/D99AfEnT96xj1fsy/" + jing +
                         "," + wei + "/forecast.json";
 
                 HttpUtil.sendOkHttpRequest(caiWeatherUrl, new Callback() {
+
                     @Override
                     public void onResponse(Call call, Response response) throws IOException {
                         final String responseText2 = response.body().string();
@@ -217,7 +216,7 @@ public class Tabs extends AppCompatActivity {
                             favouriteCity.setName(weather.basic.cityName);
                             favouriteCity.updateAll("id = ?", "1");
                             mWeatherId = weather.basic.weatherId;
-                            final WeatherFragment fragment = WeatherFragment.newInstance(responseText,responseText2);
+                            final WeatherFragment fragment = WeatherFragment.newInstance(responseText, responseText2);
                             mFragments.set(0, fragment);
                             savedList.get(0).setName(weather.basic.cityName);
                             runOnUiThread(new Runnable() {
@@ -236,20 +235,16 @@ public class Tabs extends AppCompatActivity {
                             });
                         } else {
                             Log.d("MyFault", "setWeatherOnPosition0解析彩云失败");
-                            Log.d("MyFault",hourlyAndDaily.status);
-                            Log.d("MyFault",weather.status);
+                            Log.d("MyFault", hourlyAndDaily.status);
+                            Log.d("MyFault", weather.status);
                         }
-
                     }
 
                     @Override
                     public void onFailure(Call call, IOException e) {
                         Log.d("MyFault", "setWeatherOnPosition0请求彩云失败");
                     }
-
                 });
-
-
             }
 
             @Override
@@ -258,47 +253,49 @@ public class Tabs extends AppCompatActivity {
                 Log.d("MyFault", "setWeatherOnPosition0.onFailure: 请求失败");
             }
         });
-
     }
 
     public void initView() {
-
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager(), mFragments);
-        // Set up the ViewPager with the sections adapter
-
         mViewPager.setAdapter(mSectionsPagerAdapter);
-
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         savedList = DataSupport.findAll(FavouriteCity.class);
-        /*Log.d("MyFault", "前savedList.size()="+String.valueOf(savedList.size()));
-        Log.d("MyFault", "前mFragments.size()="+String.valueOf(mFragments.size()));*/
-
-        if (savedList.size() != 0) {
+        if (savedList.size() != 0 && savedList.size() != mFragments.size()) {
             preSelectedBtn = new Button(this);
             mFragments.clear();
             ll.removeAllViews();
             for (int i = 0; i < savedList.size(); i++) {
                 String weatherInfo = savedList.get(i).getWeather();
                 String caiWeatherInfo = savedList.get(i).getCaiweather();
-                WeatherFragment fragment = WeatherFragment.newInstance(weatherInfo,caiWeatherInfo);
+                WeatherFragment fragment = WeatherFragment.newInstance(weatherInfo, caiWeatherInfo);
                 mFragments.add(fragment);
                 initBtn(new Button(this));
             }
             initView();
             Button firstBtn = (Button) ll.getChildAt(0);
             firstBtn.setBackgroundResource(R.drawable.selected_dot);
-            if(mFragments.size()==1){
+            if (mFragments.size() == 1) {
                 firstBtn.setVisibility(View.GONE);
-            }else{
+            } else {
                 firstBtn.setVisibility(View.VISIBLE);
             }
             preSelectedBtn = firstBtn;
             textView.setText(savedList.get(0).getName());
         }
+
+        if (position != -1) {
+            mViewPager.setCurrentItem(position);
+            preSelectedBtn.setBackgroundResource(R.drawable.dot);
+            Button currentBtn = (Button) ll.getChildAt(position);
+            currentBtn.setBackgroundResource(R.drawable.selected_dot);
+            preSelectedBtn = currentBtn;
+            position = -1;
+        }
+
         if (savedList.size() == 1) {
             textView.setText(savedList.get(0).getName());
         }
@@ -309,13 +306,12 @@ public class Tabs extends AppCompatActivity {
         } else {
             loadBingPic();
         }
-
     }
 
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-        mViewPager.setCurrentItem(intent.getIntExtra("position", 0));
+        position = intent.getIntExtra("position", 0);
         intent.removeExtra("position");
     }
 
@@ -326,12 +322,10 @@ public class Tabs extends AppCompatActivity {
         ll = (LinearLayout) findViewById(R.id.ll_dot);
         localBroadcastManager = LocalBroadcastManager.getInstance(this);
         textView = (TextView) findViewById(R.id.title_name);
-        //bingPicImg = (ImageView) findViewById(R.id.bing_pic_img) ;
         bingPicImg = (ImageView) findViewById(R.id.bing_pic_img);
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mViewPager = (ViewPager) findViewById(R.id.container);
-        // Log.d("MyFault", "onCreate: 实例化一个fragment的上面");
-        WeatherFragment fragment = WeatherFragment.newInstance("","");
+        WeatherFragment fragment = WeatherFragment.newInstance("", "");
         mFragments.add(fragment);
 
         String firstName = getIntent().getStringExtra("firstName");
@@ -356,22 +350,20 @@ public class Tabs extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(Tabs.this, AddCity.class);
                 startActivity(intent);
-
             }
         });
-
 
         initView();
 
         //页面切换监听
         mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
             }
 
             @Override
             public void onPageSelected(int position) {
-
                 if (preSelectedBtn != null) {
                     preSelectedBtn.setBackgroundResource(R.drawable.dot);
                     Button currentBtn = (Button) ll.getChildAt(position);
@@ -383,14 +375,12 @@ public class Tabs extends AppCompatActivity {
 
             @Override
             public void onPageScrollStateChanged(int state) {
-
             }
         });
     }
 
     //适配器
     public class SectionsPagerAdapter extends FragmentStatePagerAdapter {
-
         List<WeatherFragment> fragmentList;
 
         public SectionsPagerAdapter(FragmentManager fm, List<WeatherFragment> fragmentList) {
@@ -421,7 +411,7 @@ public class Tabs extends AppCompatActivity {
     /**
      * 显示进度对话框
      */
-    public void showProgressDialog(){
+    public void showProgressDialog() {
         if (progressDialog == null) {
             progressDialog = new ProgressDialog(this);
             progressDialog.setMessage("正在加载....");
@@ -429,10 +419,11 @@ public class Tabs extends AppCompatActivity {
         }
         progressDialog.show();
     }
+
     /**
      * 关闭进度对话框
      */
-    public void closeProgressDialog(){
+    public void closeProgressDialog() {
         if (progressDialog != null) {
             progressDialog.dismiss();
         }

@@ -8,18 +8,19 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+
 import com.example.administrator.justfortest2.db.FavouriteCity;
 import com.example.administrator.justfortest2.util.DiyCityAdapter;
+
 import org.litepal.crud.DataSupport;
+
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class AddCity extends AppCompatActivity implements DiyCityAdapter.RecyItemOnClick,View.OnClickListener {
+public class AddCity extends AppCompatActivity implements DiyCityAdapter.RecyItemOnClick, View.OnClickListener {
 
     public List<DiyCity> diyCityList = new ArrayList<>();
 
@@ -36,12 +37,6 @@ public class AddCity extends AppCompatActivity implements DiyCityAdapter.RecyIte
     private Button yes;
 
     private Button backBtn;
-
-    /*private View search;
-
-    private View edit;
-
-    private View yes;*/
 
     @Override
     public void onClick(View v) {
@@ -89,7 +84,7 @@ public class AddCity extends AppCompatActivity implements DiyCityAdapter.RecyIte
         setContentView(R.layout.activity_addcity);
         backBtn = (Button) findViewById(R.id.backBtn_addCity);
         edit = (Button) findViewById(R.id.btn_edit);
-        yes = (Button)findViewById(R.id.btn_yes);
+        yes = (Button) findViewById(R.id.btn_yes);
         search = (Button) findViewById(R.id.btn_search);
         edit.setOnClickListener(this);
         yes.setOnClickListener(this);
@@ -104,18 +99,7 @@ public class AddCity extends AppCompatActivity implements DiyCityAdapter.RecyIte
         adapter = new DiyCityAdapter(diyCityList, AddCity.this, 0, this);
         recyclerView.setAdapter(adapter);
         adapter.setRecyItemOnClick(this);
-
-        /*backBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });*/
-
-        Log.d("MyFault", "onCreate: ");
-
     }
-
 
     @Override
     public void onItemOnClick(View view, int index) {
@@ -125,16 +109,6 @@ public class AddCity extends AppCompatActivity implements DiyCityAdapter.RecyIte
         finish();
     }
 
-/*
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.toolbar, menu);
-        Log.d("MyFault", "onCreateOptionsMenu: ");
-
-        return true;
-    }*/
-
-
     /**
      * 这个方法可以用在tabs和这个活动之间
      * <p>
@@ -143,8 +117,6 @@ public class AddCity extends AppCompatActivity implements DiyCityAdapter.RecyIte
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
-
         switch (requestCode) {
             case 1:
                 if (resultCode == RESULT_OK) {
@@ -159,41 +131,4 @@ public class AddCity extends AppCompatActivity implements DiyCityAdapter.RecyIte
             default:
         }
     }
-
-/*
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        search = toolbar.findViewById(R.id.search);
-        edit = toolbar.findViewById(R.id.edit);
-        yes = toolbar.findViewById(R.id.yes);
-        Log.d("MyFault", "onOptionsItemSelected: ");
-        switch (item.getItemId()) {
-            case R.id.search:
-                Intent intent = new Intent(AddCity.this, SearchCity.class);
-                startActivityForResult(intent, 1);
-                break;
-            case R.id.edit:
-                    adapter = new DiyCityAdapter(diyCityList, AddCity.this, 1, this);
-                    recyclerView.setAdapter(adapter);
-                    adapter.setRecyItemOnClick(this);
-                    search.setVisibility(View.GONE);
-                    edit.setVisibility(View.GONE);
-                    yes.setVisibility(View.VISIBLE);
-                Log.d("MyFault", "onOptionsItemSelected: ");
-                break;
-            case R.id.yes:
-                adapter = new DiyCityAdapter(diyCityList, AddCity.this, 0, this);
-                recyclerView.setAdapter(adapter);
-                adapter.setRecyItemOnClick(this);
-                search.setVisibility(View.VISIBLE);
-                edit.setVisibility(View.VISIBLE);
-                yes.setVisibility(View.GONE);
-
-                break;
-            default:
-        }
-        return true;
-    }
-*/
-
 }

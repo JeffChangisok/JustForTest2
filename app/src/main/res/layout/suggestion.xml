@@ -20,12 +20,22 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-        <ImageView
+        <RelativeLayout
             android:layout_width="0dp"
             android:layout_height="95dp"
             android:layout_weight="1"
             android:layout_margin="5dp"
-            android:src="@drawable/comf" />
+            >
+
+            <ImageView
+                android:layout_width="95dp"
+                android:layout_height="95dp"
+                android:layout_margin="10dp"
+                android:layout_centerInParent="true"
+                android:src="@drawable/comf" />
+
+        </RelativeLayout>
+
 
         <LinearLayout
             android:layout_width="0dp"
@@ -72,76 +82,26 @@
 
     </LinearLayout>
 
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-        <ImageView
+        <RelativeLayout
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="95dp"
-            android:layout_margin="5dp"
-            android:src="@drawable/cloth" />
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_weight="2"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="38dp"
-
-                android:orientation="horizontal">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:gravity="center|start"
-                    android:textColor="#fff"
-                    android:textSize="18dp"
-                    android:text="穿衣指数"/>
-
-                <Space
-                    android:layout_width="32dp"
-                    android:layout_height="match_parent" />
-
-                <TextView
-                    android:id="@+id/cloth_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:textColor="#fff"
-                    android:textSize="16dp"
-                    android:gravity="center|start"
-                    android:text="舒适"/>
-            </LinearLayout>
-
-            <TextView
-                android:id="@+id/cloth_info"
-                android:layout_width="match_parent"
-                android:layout_height="57dp"
-                android:textColor="#fff"
-                android:gravity="center|start" />
-
-        </LinearLayout>
-
-    </LinearLayout>
-
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="5dp" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <ImageView
-            android:layout_width="0dp"
             android:layout_weight="1"
-            android:layout_height="95dp"
             android:layout_margin="5dp"
-            android:src="@drawable/travel" />
+            >
+
+            <ImageView
+                android:layout_width="95dp"
+                android:layout_height="95dp"
+                android:layout_margin="15dp"
+                android:layout_centerInParent="true"
+                android:src="@drawable/travel" />
+        </RelativeLayout>
+
         <LinearLayout
             android:layout_width="0dp"
             android:layout_weight="2"
@@ -194,12 +154,90 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-        <ImageView
-            android:layout_margin="5dp"
+
+        <RelativeLayout
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="95dp"
-            android:src="@drawable/sport" />
+            android:layout_weight="1"
+            android:layout_margin="5dp"
+            >
+
+            <ImageView
+                android:layout_width="95dp"
+                android:layout_height="95dp"
+                android:layout_margin="15dp"
+                android:layout_centerInParent="true"
+                android:src="@drawable/cloth" />
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="2"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="38dp"
+
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center|start"
+                    android:textColor="#fff"
+                    android:textSize="18dp"
+                    android:text="穿衣指数"/>
+
+                <Space
+                    android:layout_width="32dp"
+                    android:layout_height="match_parent" />
+
+                <TextView
+                    android:id="@+id/cloth_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:textColor="#fff"
+                    android:textSize="16dp"
+                    android:gravity="center|start"
+                    android:text="舒适"/>
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/cloth_info"
+                android:layout_width="match_parent"
+                android:layout_height="57dp"
+                android:textColor="#fff"
+                android:gravity="center|start" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="5dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="95dp"
+            android:layout_weight="1"
+            android:layout_margin="5dp"
+            >
+
+            <ImageView
+                android:layout_width="95dp"
+                android:layout_height="95dp"
+                android:layout_margin="15dp"
+                android:layout_centerInParent="true"
+                android:src="@drawable/sport" />
+
+        </RelativeLayout>
         <LinearLayout
             android:layout_width="0dp"
             android:layout_weight="2"
