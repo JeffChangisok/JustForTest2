@@ -410,6 +410,7 @@ public class WeatherFragment extends Fragment {
         if(weather.aqi!=null){
             aqiSB.append(weather.aqi.city.aqi).append("  μg/m³");
             pm25SB.append(weather.aqi.city.pm25).append("  μg/m³");
+            qlty.setText(weather.aqi.city.qlty);
         }else{
             aqiSB.append("未知");
             pm25SB.append("未知");
