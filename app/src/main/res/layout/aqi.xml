@@ -42,7 +42,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_alignRight="@+id/strut"
+                    android:layout_toLeftOf="@+id/strut"
                     android:layout_alignParentLeft="true"
                     android:gravity="center"
                     android:textColor="#fff"

@@ -30,20 +30,27 @@
             <ImageView
                 android:layout_width="95dp"
                 android:layout_height="95dp"
-                android:layout_margin="10dp"
+                android:layout_margin="6dp"
                 android:layout_centerInParent="true"
                 android:src="@drawable/comf" />
 
         </RelativeLayout>
 
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="2"
             android:orientation="vertical">
 
+            <View
+                android:id="@+id/v1"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_alignBottom="@+id/ll1"/>
+
             <LinearLayout
+                android:id="@+id/ll1"
                 android:layout_width="match_parent"
                 android:layout_height="38dp"
 
@@ -74,11 +81,12 @@
             <TextView
                 android:id="@+id/comfort_info"
                 android:layout_width="match_parent"
-                android:layout_height="57dp"
+                android:layout_height="match_parent"
                 android:gravity="center|start"
-                android:textColor="#fff" />
+                android:textColor="#fff"
+                android:layout_below="@+id/v1" />
 
-        </LinearLayout>
+        </RelativeLayout>
 
     </LinearLayout>
 
@@ -102,15 +110,22 @@
                 android:src="@drawable/travel" />
         </RelativeLayout>
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="0dp"
             android:layout_weight="2"
             android:layout_height="match_parent"
             android:orientation="vertical">
+
+            <View
+                android:id="@+id/v2"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_alignBottom="@+id/ll2"/>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="38dp"
-
+                android:id="@+id/ll2"
                 android:orientation="horizontal">
                 <TextView
                     android:layout_width="wrap_content"
@@ -137,11 +152,12 @@
             <TextView
                 android:id="@+id/travel_info"
                 android:layout_width="match_parent"
-                android:layout_height="57dp"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/v2"
                 android:gravity="center|start"
                 android:textColor="#fff" />
 
-        </LinearLayout>
+        </RelativeLayout>
 
     </LinearLayout>
 
@@ -153,7 +169,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
-
 
         <RelativeLayout
             android:layout_width="0dp"
@@ -171,16 +186,24 @@
 
         </RelativeLayout>
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="0dp"
             android:layout_weight="2"
             android:layout_height="match_parent"
             android:orientation="vertical">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_alignBottom="@+id/ll3"
+                android:id="@+id/v3"/>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="38dp"
-
+                android:id="@+id/ll3"
                 android:orientation="horizontal">
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
@@ -206,11 +229,12 @@
             <TextView
                 android:id="@+id/cloth_info"
                 android:layout_width="match_parent"
-                android:layout_height="57dp"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/v3"
                 android:textColor="#fff"
                 android:gravity="center|start" />
 
-        </LinearLayout>
+        </RelativeLayout>
 
     </LinearLayout>
 
@@ -238,15 +262,23 @@
                 android:src="@drawable/sport" />
 
         </RelativeLayout>
-        <LinearLayout
+
+        <RelativeLayout
             android:layout_width="0dp"
             android:layout_weight="2"
             android:layout_height="match_parent"
             android:orientation="vertical">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_alignBottom="@+id/ll4"
+                android:id="@+id/v4"/>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="38dp"
-
+                android:id="@+id/ll4"
                 android:orientation="horizontal">
                 <TextView
                     android:layout_width="wrap_content"
@@ -273,11 +305,12 @@
             <TextView
                 android:id="@+id/sport_info"
                 android:layout_width="match_parent"
-                android:layout_height="57dp"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/v4"
                 android:textColor="#fff"
                 android:gravity="center|start" />
 
-        </LinearLayout>
+        </RelativeLayout>
 
     </LinearLayout>
 

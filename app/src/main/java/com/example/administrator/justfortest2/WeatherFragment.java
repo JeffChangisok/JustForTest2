@@ -288,7 +288,7 @@ public class WeatherFragment extends Fragment {
         List<HourlyTemp> hourlyTempList = hourlyAndDaily.result.hourly.temperature;
         List<Result.Skycon> hourlySkyconList = hourlyAndDaily.result.hourly.skycon;
         for (int i = 0; i < hourlyTempList.size(); i++) {
-            str1 = String.valueOf(hourlyTempList.get(i).value) + "℃";
+            str1 = String.valueOf((int)(hourlyTempList.get(i).value+0.5)) + "℃";
             str2 = hourlyTempList.get(i).datetime.split(" ")[1];
             switch (hourlySkyconList.get(i).value) {
                 case "CLEAR_DAY":
@@ -398,7 +398,8 @@ public class WeatherFragment extends Fragment {
             }
 
             StringBuilder dailyDegree = new StringBuilder();
-            dailyDegree.append(dailyTempList.get(i).min).append("~").append(dailyTempList.get(i).max)
+            dailyDegree.append((int)(dailyTempList.get(i).min+0.5)).append("~")
+                    .append((int)(dailyTempList.get(i).max+0.5))
                     .append("℃");
             tempText.setText(dailyDegree.toString());
             forecastLayout.addView(view);
