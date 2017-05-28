@@ -5,6 +5,6 @@ package com.example.administrator.justfortest2.gson;
  */
 
 public class HourlyAndDaily {
-    public Result result;
     public String status;
+    public Result result;
 }

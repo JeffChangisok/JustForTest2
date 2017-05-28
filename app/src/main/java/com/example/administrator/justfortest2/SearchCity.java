@@ -178,6 +178,9 @@ public class SearchCity extends AppCompatActivity {
         });
     }
 
+    /**
+     * 设置适配器
+     */
     private void set_mListView_adapter() {
         mListView.setVisibility(View.GONE);
         getmData(mData);
@@ -187,6 +190,9 @@ public class SearchCity extends AppCompatActivity {
         mListView.setAdapter(adapter);
     }
 
+    /**
+     * 编辑框文字改变时的操作
+     */
     private void set_eSearch_TextChanged() {
 
         eSearch.addTextChangedListener(new TextWatcher() {
@@ -209,6 +215,11 @@ public class SearchCity extends AppCompatActivity {
         });
     }
 
+    /**
+     * 根据编辑框的文字检索城市信息并放到数据集中
+     * @param mDataSubs 用于显示在listview中的数据
+     * @param data 编辑框中的文字
+     */
     private void getmDataSub(ArrayList<Map<String, Object>> mDataSubs, String data) {
         int length = mListTitle.size();
 
@@ -224,6 +235,9 @@ public class SearchCity extends AppCompatActivity {
 
     }
 
+    /**
+     * 删除按钮点击事件
+     */
     private void set_ivDeleteText_OnClick() {
         ivDeleteText = (ImageView) findViewById(R.id.ivDeleteText);
         ivDeleteText.setOnClickListener(new View.OnClickListener() {
@@ -233,6 +247,11 @@ public class SearchCity extends AppCompatActivity {
         });
     }
 
+    /**
+     * 读取文本文件内容并存入list中
+     * @param files
+     * @param list
+     */
     private void putData(String files[], List<String> list) {
         boolean flag = false;
         if ("cityid_1.txt".equals(files[0])) {
@@ -263,6 +282,10 @@ public class SearchCity extends AppCompatActivity {
     }
 
 
+    /**
+     *
+     * @param mDatas
+     */
     private void getmData(ArrayList<Map<String, Object>> mDatas) {
         HashMap item = new HashMap();
         String cityIdFiles[] = {"cityid_1.txt", "cityid_2.txt", "cityid_3.txt", "cityid_4.txt",

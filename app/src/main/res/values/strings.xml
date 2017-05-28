@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">不怎么好用的天气软件</string>
+    <string name="app_name">O₂</string>
     <string name="title_activity_tabs">Tabs</string>
     <string name="action_settings">Settings</string>
     <string name="section_format">Hello World from section: %1$d</string>

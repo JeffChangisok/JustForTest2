@@ -81,15 +81,17 @@ public class Tabs extends AppCompatActivity {
 
 
     /**
-     * 加载必应每日一图
+     * 构造按钮
      */
-
     public void initBtn(Button btn) {
         btn.setLayoutParams(new ViewGroup.LayoutParams(15, 15));
         btn.setBackgroundResource(R.drawable.dot);
         ll.addView(btn);
     }
 
+    /**
+     * 加载必应每日一图
+     */
     private void loadBingPic() {
         String requestBingPic = "http://guolin.tech/api/bing_pic";
         HttpUtil.sendOkHttpRequest(requestBingPic, new Callback() {
@@ -117,6 +119,9 @@ public class Tabs extends AppCompatActivity {
         });
     }
 
+    /**
+     * 更新天气
+     */
     public void refresh(final String weatherId) {
 
         final int currentItem = mViewPager.getCurrentItem();
@@ -183,6 +188,9 @@ public class Tabs extends AppCompatActivity {
         loadBingPic();
     }
 
+    /**
+     *根据侧滑菜单传来的数据请求天气
+     */
     public void setWeatherOnPosition0(final String weatherId) {
 
         final String weatherUrl = "https://free-api.heweather.com/v5/weather?city=" +
@@ -255,6 +263,9 @@ public class Tabs extends AppCompatActivity {
         });
     }
 
+    /**
+     * 构造页面
+     */
     public void initView() {
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager(), mFragments);
         mViewPager.setAdapter(mSectionsPagerAdapter);
@@ -308,6 +319,9 @@ public class Tabs extends AppCompatActivity {
         }
     }
 
+    /**
+     * 接受来自addcity的位置
+     */
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
@@ -379,7 +393,9 @@ public class Tabs extends AppCompatActivity {
         });
     }
 
-    //适配器
+    /**
+     * viewpager适配器
+     */
     public class SectionsPagerAdapter extends FragmentStatePagerAdapter {
         List<WeatherFragment> fragmentList;
 

@@ -2,10 +2,6 @@ package com.example.administrator.justfortest2.gson;
 
 import java.util.List;
 
-/**
- * Created by Administrator on 2017/5/16.
- */
-
 public class Result {
     public Hourly hourly;
     public Daily daily;

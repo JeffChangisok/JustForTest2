@@ -72,7 +72,7 @@ public class WeatherFragment extends Fragment {
     private TextView aqi;
     private TextView pm25;
     private TextView qlty;
-    private TextView airInfo;
+    //private TextView airInfo;
 
     private TextView comfortTitle;
     private TextView comfortInfo;
@@ -127,7 +127,7 @@ public class WeatherFragment extends Fragment {
         aqi = (TextView) view.findViewById(R.id.aqi);
         pm25 = (TextView) view.findViewById(R.id.pm25);
         qlty = (TextView) view.findViewById(R.id.qlty);
-        airInfo = (TextView) view.findViewById(R.id.air_info);
+        //airInfo = (TextView) view.findViewById(R.id.air_info);
 
         comfortTitle = (TextView) view.findViewById(R.id.comfort_title);
         comfortInfo = (TextView) view.findViewById(R.id.comfort_info);
@@ -215,6 +215,7 @@ public class WeatherFragment extends Fragment {
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 final String responseText = response.body().string();
+                Log.d("MyFault", "和风请求成功");
                 final Weather weather = Utility.handleWeatherResponse(responseText);
                 String jing = weather.basic.jing;
                 String wei = weather.basic.wei;
@@ -421,7 +422,7 @@ public class WeatherFragment extends Fragment {
         aqi.setText(aqiSB.toString());
         pm25.setText(pm25SB.toString());
 
-        airInfo.setText(weather.suggestion.air.info);
+        //airInfo.setText(weather.suggestion.air.info);
 
         comfortTitle.setText(weather.suggestion.comfort.title);
         comfortInfo.setText(weather.suggestion.comfort.info);
